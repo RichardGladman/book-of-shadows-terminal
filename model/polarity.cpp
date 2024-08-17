@@ -22,7 +22,7 @@ void Polarity::set_meaning(std::string m)
     meaning = m;
 }
 
-bool Polarity::operator=(const Polarity &rhs) const
+bool Polarity::operator==(const Polarity &rhs) const
 {
     return id == rhs.id && name == rhs.name && meaning == rhs.meaning;
 }

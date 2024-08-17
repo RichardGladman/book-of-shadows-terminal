@@ -15,7 +15,7 @@ public:
     void set_name(std::string n);
     void set_meaning(std::string m);
 
-    bool operator=(const Colour &rhs) const;
+    bool operator==(const Colour &rhs) const;
 
 private:
     std::string name;

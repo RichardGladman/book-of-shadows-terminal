@@ -22,7 +22,7 @@ void Colour::set_meaning(std::string m)
     meaning = m;
 }
 
-bool Colour::operator=(const Colour &rhs) const
+bool Colour::operator==(const Colour &rhs) const
 {
     return id == rhs.id && name == rhs.name && meaning == rhs.meaning;
 }

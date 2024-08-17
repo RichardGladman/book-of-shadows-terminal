@@ -14,7 +14,7 @@ public:
     void set_name(std::string n);
     void set_meaning(std::string m);
 
-    bool operator=(const Polarity &rhs) const;
+    bool operator==(const Polarity &rhs) const;
 
 private:
     std::string name;
