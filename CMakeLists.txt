@@ -15,7 +15,9 @@ add_executable(bookofshadows main.cpp
     model/herb.h model/herb.cpp
     model/planet.h model/planet.cpp
     model/tree.h model/tree.cpp
-    model/zodiac.h model/zodiac.cpp)
+    model/zodiac.h model/zodiac.cpp
+    model/runestone.h model/runestone.cpp
+    model/tarotcard.h model/tarotcard.cpp)
 
 target_include_directories(bookofshadows PRIVATE /usr/local/include/ansicodes)
 target_link_libraries(bookofshadows PRIVATE ansicodes::ansicodes_lib)
