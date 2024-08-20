@@ -3,14 +3,16 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "colour.h"
 #include "god.h"
 #include "herb.h"
 #include "planet.h"
 #include "polarity.h"
-#include "tarotcard.h"
 #include "tree.h"
 #include "zodiac.h"
+
+class TarotCard;
 
 class Runestone
 {
@@ -50,7 +52,7 @@ private:
     std::vector<Herb> m_herbs;
     std::vector<Planet> m_planets;
     Polarity m_polarity;
-    TarotCard m_tarot_card;
+    std::shared_ptr<TarotCard> m_tarot_card;
     std::vector<Tree> m_trees;
     std::vector<Zodiac> m_zodiacs;
 };

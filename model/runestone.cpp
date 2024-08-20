@@ -1,4 +1,5 @@
 #include "runestone.h"
+#include "tarotcard.h"
 
 Runestone::Runestone() {}
 
@@ -39,7 +40,7 @@ Polarity Runestone::polarity() const
 
 TarotCard Runestone::tarot_card() const
 {
-    return this->m_tarot_card;
+    return *this->m_tarot_card;
 }
 
 std::vector<Tree> Runestone::trees() const
@@ -69,7 +70,7 @@ void Runestone::polarity(const Polarity &polarity)
 
 void Runestone::tarot_card(const TarotCard &tarot_card)
 {
-    this->m_tarot_card = tarot_card;
+    *this->m_tarot_card = tarot_card;
 }
 
 void Runestone::add_colour(const Colour &colour)
