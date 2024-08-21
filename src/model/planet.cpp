@@ -1,4 +1,4 @@
-#include "planet.h"
+#include "model/planet.h"
 
 Planet::Planet() {}
 

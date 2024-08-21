@@ -1,4 +1,4 @@
-#include "colour.h"
+#include "model/colour.h"
 
 Colour::Colour() {}
 

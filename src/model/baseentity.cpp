@@ -1,4 +1,4 @@
-#include "baseentity.h"
+#include "model/baseentity.h"
 
 static long next_id = 1;
 
@@ -6,7 +6,7 @@ BaseEntity::BaseEntity(): id {0}, created_at {0}, modified_at {0} {}
 
 long BaseEntity::get_id() const
 {
-    return id;
+    return id; 
 }
 
 long BaseEntity::get_created_at() const

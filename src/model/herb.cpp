@@ -1,4 +1,4 @@
-#include "herb.h"
+#include "model/herb.h"
 
 Herb::Herb() {}
 

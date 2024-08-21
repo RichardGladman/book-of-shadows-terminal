@@ -1,4 +1,4 @@
-#include "polarity.h"
+#include "model/polarity.h"
 
 Polarity::Polarity() {}
 

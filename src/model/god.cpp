@@ -1,4 +1,4 @@
-#include "god.h"
+#include <model/god.h>
 
 God::God() {}
 

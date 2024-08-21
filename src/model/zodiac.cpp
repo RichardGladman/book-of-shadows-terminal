@@ -1,4 +1,4 @@
-#include "zodiac.h"
+#include "model/zodiac.h"
 
 Zodiac::Zodiac() {}
 

@@ -1,5 +1,5 @@
-#include "runestone.h"
-#include "tarotcard.h"
+#include "model/runestone.h"
+#include "model/tarotcard.h"
 
 Runestone::Runestone() {}
 

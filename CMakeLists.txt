@@ -1,26 +1,13 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.27)
 
-project(BookOfShadows LANGUAGES CXX)
+project(BookOfShadows LANGUAGES CXX VERSION 0.0.1)
 
-find_package(ansicodes REQUIRED)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+add_subdirectory(src)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_executable(bookofshadows main.cpp
-    model/baseentity.h model/baseentity.cpp
-    model/colour.h model/colour.cpp
-    model/polarity.h model/polarity.cpp
-    model/god.h model/god.cpp
-    model/herb.h model/herb.cpp
-    model/planet.h model/planet.cpp
-    model/tree.h model/tree.cpp
-    model/zodiac.h model/zodiac.cpp
-    model/runestone.h model/runestone.cpp
-    model/tarotcard.h model/tarotcard.cpp)
-
-target_include_directories(bookofshadows PRIVATE /usr/local/include/ansicodes)
-target_link_libraries(bookofshadows PRIVATE ansicodes::ansicodes_lib)
 
 include(GNUInstallDirs)
 install(TARGETS bookofshadows

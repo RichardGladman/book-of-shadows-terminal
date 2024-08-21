@@ -1,0 +1,20 @@
+find_package(ansicodes REQUIRED)
+
+add_executable(bookofshadows main.cpp
+    ../include/model/baseentity.h model/baseentity.cpp
+    ../include/model/colour.h model/colour.cpp
+    ../include/model/polarity.h model/polarity.cpp
+    ../include/model/god.h model/god.cpp
+    ../include/model/herb.h model/herb.cpp
+    ../include/model/planet.h model/planet.cpp
+    ../include/model/tree.h model/tree.cpp
+    ../include/model/zodiac.h model/zodiac.cpp
+    ../include/model/runestone.h model/runestone.cpp
+    ../include/model/tarotcard.h model/tarotcard.cpp)
+
+target_include_directories(bookofshadows PUBLIC 
+          $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+          $<BUILD_INTERFACE:/usr/local/include/ansicodes>
+)
+
+target_link_libraries(bookofshadows PRIVATE ansicodes::ansicodes_lib)
