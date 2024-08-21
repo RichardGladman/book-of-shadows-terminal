@@ -8,6 +8,9 @@ class Colour: public BaseEntity
 {
 public:
     Colour();
+    Colour(const std::string &name);
+    Colour(const std::string &name, const std::string &meaning);
+    Colour(const Colour &source);
 
     std::string get_name() const;
     std::string get_meaning() const;
@@ -18,8 +21,8 @@ public:
     bool operator==(const Colour &rhs) const;
 
 private:
-    std::string name;
-    std::string meaning;
+    std::string m_name;
+    std::string m_meaning;
 };
 
 #endif // COLOUR_H
