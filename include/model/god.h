@@ -10,6 +10,9 @@ class God : public BaseEntity
 {
 public:
     God();
+    God(const std::string &name, const std::string &type, const Polarity &polarity);
+    God(const std::string &name, const std::string &type, const Polarity &polarity, const std::string &description);
+    God(const God &source);
 
     std::string get_name() const;
     std::string get_type() const;
@@ -24,10 +27,10 @@ public:
     bool operator==(const God &rhs) const;
 
 private:
-    std::string name;
-    std::string type;
-    std::string description;
-    Polarity polarity;
+    std::string m_name;
+    std::string m_type;
+    std::string m_description;
+    Polarity m_polarity;
 };
 
 #endif // GOD_H
