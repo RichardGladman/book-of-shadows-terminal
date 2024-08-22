@@ -6,7 +6,7 @@ namespace Model
     TarotCard::TarotCard(const std::string &name, const std::string &meaning) :
             m_name {name}, m_meaning {meaning}, m_colours {std::vector<Colour> {}}, m_gods {std::vector<God> {}},
             m_herbs {std::vector<Herb> {}}, m_planets {std::vector<Planet> {}}, m_polarity {Polarity {}},
-            m_runestone {std::shared_ptr<Runestone> {}}, m_trees {std::vector<Tree> {}}, m_zodiacs {std::vector<Zodiac> {}} {}
+            m_runestone {}, m_trees {std::vector<Tree> {}}, m_zodiacs {std::vector<Zodiac> {}} {}
 
     TarotCard::TarotCard(const TarotCard &source) : m_name {source.m_name}, m_meaning {source.m_meaning}, m_colours {source.m_colours},
             m_gods {source.m_gods}, m_herbs {source.m_herbs}, m_planets {source.m_planets}, m_polarity {source.m_polarity},

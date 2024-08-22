@@ -12,10 +12,11 @@
 #include "tree.h"
 #include "zodiac.h"
 
-class Runestone;
 
 namespace Model
 {
+    class Runestone;
+    
     class TarotCard : public BaseEntity
     {
     public:
