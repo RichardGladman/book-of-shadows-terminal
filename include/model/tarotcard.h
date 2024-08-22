@@ -17,7 +17,8 @@ class Runestone;
 class TarotCard
 {
 public:
-    TarotCard();
+    TarotCard(const std::string &name, const std::string &meaning);
+    TarotCard(const TarotCard &source);
 
     std::string name() const;
     std::string meaning() const;
