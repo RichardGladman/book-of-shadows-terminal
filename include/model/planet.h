@@ -4,24 +4,27 @@
 #include <string>
 #include "baseentity.h"
 
-class Planet : public BaseEntity
+namespace Model
 {
-public:
-    Planet();
-    Planet(const std::string &name, const std::string &description);
-    Planet(const Planet &source);
+    class Planet : public BaseEntity
+    {
+    public:
+        Planet();
+        Planet(const std::string &name, const std::string &description);
+        Planet(const Planet &source);
 
-    std::string get_name() const;
-    std::string get_description() const;
+        std::string get_name() const;
+        std::string get_description() const;
 
-    void set_name(std::string name);
-    void set_description(std::string description);
+        void set_name(std::string name);
+        void set_description(std::string description);
 
-    bool operator==(const Planet &rhs) const;
+        bool operator==(const Planet &rhs) const;
 
-private:
-    std::string m_name;
-    std::string m_description;
-};
+    private:
+        std::string m_name;
+        std::string m_description;
+    };
+}
 
 #endif // PLANET_H

@@ -1,30 +1,33 @@
 #include "model/herb.h"
 
-Herb::Herb() : Herb {"", ""} {}
-Herb::Herb(const std::string &name, const std::string &description) : m_name {name}, m_description {description} {}
-Herb::Herb(const Herb &source) : Herb { source.m_name, source.m_description} {}
-
-std::string Herb::get_name() const
+namespace Model
 {
-    return this->m_name;
-}
+    Herb::Herb() : Herb {"", ""} {}
+    Herb::Herb(const std::string &name, const std::string &description) : m_name {name}, m_description {description} {}
+    Herb::Herb(const Herb &source) : Herb { source.m_name, source.m_description} {}
 
-std::string Herb::get_description() const
-{
-    return this->m_description;
-}
+    std::string Herb::get_name() const
+    {
+        return this->m_name;
+    }
 
-void Herb::set_name(std::string n)
-{
-    this->m_name = n;
-}
+    std::string Herb::get_description() const
+    {
+        return this->m_description;
+    }
 
-void Herb::set_description(std::string d)
-{
-    this->m_description = d;
-}
+    void Herb::set_name(std::string n)
+    {
+        this->m_name = n;
+    }
 
-bool Herb::operator==(const Herb &rhs) const
-{
-    return id == rhs.id && this->m_name == rhs.m_name && this->m_description == rhs.m_description;
+    void Herb::set_description(std::string d)
+    {
+        this->m_description = d;
+    }
+
+    bool Herb::operator==(const Herb &rhs) const
+    {
+        return id == rhs.id && this->m_name == rhs.m_name && this->m_description == rhs.m_description;
+    }
 }
