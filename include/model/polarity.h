@@ -8,6 +8,9 @@ class Polarity : public BaseEntity
 {
 public:
     Polarity();
+    Polarity(const std::string &name, const std::string &meaning);
+    Polarity(const Polarity &source);
+
     std::string get_name() const;
     std::string get_meaning() const;
 
@@ -17,8 +20,8 @@ public:
     bool operator==(const Polarity &rhs) const;
 
 private:
-    std::string name;
-    std::string meaning;
+    std::string m_name;
+    std::string m_meaning;
 };
 
 #endif // POLARITY_H

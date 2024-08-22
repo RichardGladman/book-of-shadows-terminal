@@ -1,28 +1,30 @@
 #include "model/polarity.h"
 
-Polarity::Polarity() {}
+Polarity::Polarity() : Polarity {"", ""} {}
+Polarity::Polarity(const std::string &name, const std::string &meaning) : m_name {name}, m_meaning {meaning} {}
+Polarity::Polarity(const Polarity &source) : Polarity {source.m_name, source.m_meaning} {}
 
 std::string Polarity::get_name() const
 {
-    return name;
+    return this->m_name;
 }
 
 std::string Polarity::get_meaning() const
 {
-    return meaning;
+    return this->m_meaning;
 }
 
 void Polarity::set_name(std::string n)
 {
-    name = n;
+    this->m_name = n;
 }
 
 void Polarity::set_meaning(std::string m)
 {
-    meaning = m;
+    this->m_meaning = m;
 }
 
 bool Polarity::operator==(const Polarity &rhs) const
 {
-    return id == rhs.id && name == rhs.name && meaning == rhs.meaning;
+    return this->id == rhs.id && this->m_name == rhs.m_name && this->m_meaning == rhs.m_meaning;
 }
