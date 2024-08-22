@@ -1,28 +1,30 @@
 #include "model/tree.h"
 
-Tree::Tree() {}
+Tree::Tree() : Tree {"", ""} {}
+Tree::Tree(const std::string &name, const std::string &description) : m_name {name}, m_description {description} {}
+Tree::Tree(const Tree &source) : Tree {source.m_name, source.m_description} {}
 
 std::string Tree::get_name() const
 {
-    return name;
+    return this->m_name;
 }
 
 std::string Tree::get_description() const
 {
-    return description;
+    return this->m_description;
 }
 
 void Tree::set_name(std::string name)
 {
-    this->name = name;
+    this->m_name = name;
 }
 
 void Tree::set_description(std::string description)
 {
-    this->description = description;
+    this->m_description = description;
 }
 
 bool Tree::operator==(const Tree &rhs) const
 {
-    return id == rhs.id && name == rhs.name && description == rhs.description;
+    return this->id == rhs.id && this->m_name == rhs.m_name && this->m_description == rhs.m_description;
 }
