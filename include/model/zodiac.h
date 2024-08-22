@@ -9,6 +9,9 @@ class Zodiac : public BaseEntity
 {
 public:
     Zodiac();
+    Zodiac(const std::string &name, const std::string &description,
+            const std::chrono::time_point<std::chrono::system_clock> &start_date, const std::chrono::time_point<std::chrono::system_clock> &end_date);
+    Zodiac(const Zodiac &source);
 
     std::string get_name() const;
     std::chrono::time_point<std::chrono::system_clock> get_start_date() const;
@@ -23,10 +26,10 @@ public:
     bool operator==(const Zodiac &rhs) const;
 
 private:
-    std::string name;
-    std::chrono::time_point<std::chrono::system_clock> start_date;
-    std::chrono::time_point<std::chrono::system_clock> end_date;
-    std::string description;
+    std::string m_name;
+    std::chrono::time_point<std::chrono::system_clock> m_start_date;
+    std::chrono::time_point<std::chrono::system_clock> m_end_date;
+    std::string m_description;
 };
 
 #endif // ZODIAC_H
