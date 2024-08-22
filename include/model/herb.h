@@ -9,6 +9,8 @@ class Herb : public BaseEntity
 {
 public:
     Herb();
+    Herb(const std::string &name, const std::string &description);
+    Herb(const Herb &source);
 
     std::string get_name() const;
     std::string get_description() const;
@@ -19,8 +21,8 @@ public:
     bool operator==(const Herb &rhs) const;
 
 protected:
-    std::string name;
-    std::string description;
+    std::string m_name;
+    std::string m_description;
 };
 
 #endif // HERB_H
