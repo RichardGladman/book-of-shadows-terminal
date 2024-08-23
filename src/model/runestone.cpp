@@ -49,7 +49,8 @@ namespace Model
 
     TarotCard Runestone::tarot_card() const
     {
-        return *this->m_tarot_card;
+        std::shared_ptr<TarotCard> shared {this->m_tarot_card.lock()};
+        return *shared;
     }
 
     std::vector<Tree> Runestone::trees() const
@@ -79,7 +80,8 @@ namespace Model
 
     void Runestone::tarot_card(const TarotCard &tarot_card)
     {
-        *this->m_tarot_card = tarot_card;
+        std::shared_ptr<TarotCard> shared = std::make_shared<TarotCard>(tarot_card);
+        this->m_tarot_card = shared;
     }
 
     void Runestone::add_colour(const Colour &colour)
