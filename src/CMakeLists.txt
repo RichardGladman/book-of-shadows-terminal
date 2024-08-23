@@ -10,7 +10,8 @@ add_executable(bookofshadows main.cpp
     ../include/model/tree.h model/tree.cpp
     ../include/model/zodiac.h model/zodiac.cpp
     ../include/model/runestone.h model/runestone.cpp
-    ../include/model/tarotcard.h model/tarotcard.cpp)
+    ../include/model/tarotcard.h model/tarotcard.cpp
+    ../include/view/menu.h view/menu.cpp)
 
 target_include_directories(bookofshadows PUBLIC 
           $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
