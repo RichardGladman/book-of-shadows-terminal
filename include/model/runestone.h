@@ -55,7 +55,7 @@ namespace Model
         std::vector<Herb> m_herbs;
         std::vector<Planet> m_planets;
         Polarity m_polarity;
-        std::shared_ptr<TarotCard> m_tarot_card;
+        std::weak_ptr<TarotCard> m_tarot_card;
         std::vector<Tree> m_trees;
         std::vector<Zodiac> m_zodiacs;
     };
