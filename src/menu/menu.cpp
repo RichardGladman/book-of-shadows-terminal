@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cctype>
+#include <limits>
 #include <ansicodes/ansicodes.h>
 
 Menu::Menu(const std::string &header, const std::string &prompt) : m_header {header}, m_prompt {prompt}, m_options {} {}
@@ -45,6 +46,9 @@ char Menu::get_selection() const
   char selection {};
   std::cin >> selection;
   selection = toupper(selection);
+
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+  std::cin.clear();
 
   return selection;
 }

@@ -13,7 +13,8 @@ add_executable(bookofshadows main.cpp
     ../include/model/tarotcard.h model/tarotcard.cpp
     ../include/menu/menu.h menu/menu.cpp
     ../include/menu/option.h menu/option.cpp
-    ../include/controllers/colourcontroller.h controllers/colourcontroller.cpp)
+    ../include/controllers/colourcontroller.h controllers/colourcontroller.cpp
+    ../include/view/input.h view/input.cpp)
 
 target_include_directories(bookofshadows PUBLIC 
           $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
