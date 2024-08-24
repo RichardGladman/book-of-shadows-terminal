@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-Option::Option(char choice, const std::string &text, std::function<void()> action) {}
+Option::Option(char choice, const std::string &text, std::function<void()> action) :
+      m_choice {choice}, m_text {text}, m_action {action} {}
 Option::~Option() {}
 
 char Option::get_choice() const
