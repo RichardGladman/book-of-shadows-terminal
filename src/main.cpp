@@ -1,6 +1,7 @@
 #include <memory>
 #include "../include/menu/menu.h"
 #include "../include/menu/option.h"
+#include "../include/controllers/colourcontroller.h"
 
 std::unique_ptr<Menu> make_main_menu();
 
@@ -25,7 +26,7 @@ std::unique_ptr<Menu> make_main_menu()
     std::unique_ptr<Menu> main_menu = std::make_unique<Menu>("Main Menu", "Enter your choice");
     main_menu->add_option(Option {'R', "Manage Runestones", nullptr});
     main_menu->add_option(Option {'T', "Manage Tarot Cards", nullptr});
-    main_menu->add_option(Option {'C', "Manage Colours", nullptr});
+    main_menu->add_option(Option {'C', "Manage Colours", handle_colour_menu});
     main_menu->add_option(Option {'G', "Manage Gods", nullptr});
     main_menu->add_option(Option {'H', "Manage Herbs", nullptr});
     main_menu->add_option(Option {'P', "Manage Planets", nullptr});
