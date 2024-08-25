@@ -1,10 +1,11 @@
-#include "model/colour.h"
+#include "../../include/model/colour.h"
 
 namespace Model
 {
-    Colour::Colour() : Colour { "", ""} {}
+    Colour::Colour() : Colour { 0, "", ""} {}
     Colour::Colour(const std::string &name) : Colour { name, ""} {}
-    Colour::Colour(const std::string &name, const std::string &meaning) : m_name { name }, m_meaning { meaning } {}
+    Colour::Colour(const std::string &name, const std::string &meaning) : Colour {0, name, meaning} {}
+    Colour::Colour(int id, const std::string &name, const std::string &meaning) : BaseEntity {id}, m_name { name }, m_meaning { meaning } {}
     Colour::Colour(const Colour &source) : Colour { source.m_name, source.m_meaning} {}
 
 
@@ -16,6 +17,11 @@ namespace Model
     std::string Colour::get_meaning() const
     {
         return this->m_meaning;
+    }
+
+    void Colour::set_id(long id)
+    {
+        this->id = id;
     }
 
     void Colour::set_name(std::string n)

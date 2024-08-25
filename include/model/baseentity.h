@@ -6,7 +6,7 @@ namespace Model
     class BaseEntity
     {
     public:
-        BaseEntity();
+        BaseEntity(long id): id {id} {};
 
         long get_id() const;
         long get_created_at() const;

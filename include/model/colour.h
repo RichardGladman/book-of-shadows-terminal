@@ -2,7 +2,7 @@
 #define COLOUR_H
 
 #include <string>
-#include "baseentity.h"
+#include "../../include/model/baseentity.h"
 
 namespace Model 
 {
@@ -12,11 +12,13 @@ namespace Model
         Colour();
         Colour(const std::string &name);
         Colour(const std::string &name, const std::string &meaning);
+        Colour(int id, const std::string &name, const std::string &meaning);
         Colour(const Colour &source);
 
         std::string get_name() const;
         std::string get_meaning() const;
 
+        void set_id(long id);
         void set_name(std::string n);
         void set_meaning(std::string m);
 
