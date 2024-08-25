@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(BookOfShadows LANGUAGES CXX VERSION 0.0.1)
+project(BookOfShadows LANGUAGES CXX VERSION 0.0.2)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
