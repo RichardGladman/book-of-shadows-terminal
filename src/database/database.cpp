@@ -1,12 +1,11 @@
+#include <cstring>
 #include "../../include/database/database.h"
+#include "../../include/view/view.h"
 
-#include <iostream>
-#include <ansicodes/ansicodes.h>
-
-Database::Database(const std::string &db_name)
+Database::Database(const std::string db_name)
 {
-  if (!sqlite3_open(db_name.c_str(), &this->m_db)) {
-    std::cerr << ANSICodes::RED << "Failed to open database: " << sqlite3_errmsg(this->m_db) << ANSICodes::RESET << std::endl;
+  if (sqlite3_open_v2(db_name.c_str(), &this->m_db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr) != SQLITE_OK) {
+    View::error_message(sqlite3_errmsg(this->m_db));
     this->m_db = nullptr;
   }
 }
@@ -23,7 +22,7 @@ bool Database::initialize(const std::vector<std::string> &sql)
   for (const std::string &sql: sql) {
     bool result = execute_sql(sql);
     if (!result) {
-      std::cerr << ANSICodes::RED << "Failed to initialize database" << ANSICodes::RESET << std::endl;
+      View::error_message("Failed to initialize database");
       return false;
     }
   }
@@ -35,24 +34,24 @@ bool Database::save(const std::string &sql, const std::vector<SqlData> &data)
 {
   sqlite3_stmt *statement;
 
-  if (sqlite3_prepare_v2(this->m_db, sql.c_str(), -1, &statement, nullptr) != SQLITE_OK) {
-    std::cerr << ANSICodes::RED << "Failed to prepare statement: " << sqlite3_errmsg(this->m_db) << ANSICodes::RESET << std::endl;
+  if (sqlite3_prepare_v2(this->m_db, sql.c_str(), sql.length(), &statement, nullptr) != SQLITE_OK) {
+    View::error_message(sqlite3_errmsg(this->m_db));
     return false;
   }
 
   for (int i {}; i < data.size(); ++i) {
     SqlData data_item = data.at(i);
     if (data_item.type() == "text") {
-      sqlite3_bind_text(statement, i + 1, data_item.data().c_str(), -1, SQLITE_STATIC);
+      sqlite3_bind_text(statement, i + 1, data_item.data().c_str(), data_item.data().length(), SQLITE_STATIC);
     } else if (data_item.type() == "number") {
       sqlite3_bind_int(statement, i + 1, std::stoi(data_item.data()));
     } else {
-      std::cerr << ANSICodes::RED << "Invalid data type" << ANSICodes::RESET << std::endl;
+      View::error_message("Invalid data type");
     }
   }
 
   if (sqlite3_step(statement) != SQLITE_DONE) {
-    std::cerr << ANSICodes::RED << "Saving failed: " << sqlite3_errmsg(this->m_db) << ANSICodes::RESET << std::endl;
+    View::error_message(sqlite3_errmsg(this->m_db));
     sqlite3_finalize(statement);
     return false;
   }
@@ -66,7 +65,7 @@ void Database::read_colours(const std::string &sql, std::vector<Model::Colour> &
   sqlite3_stmt *statement;
 
   if (sqlite3_prepare_v2(this->m_db, sql.c_str(), -1, &statement, nullptr) != SQLITE_OK) {
-    std::cerr << ANSICodes::RED << "Failed to prepare statement: " << sqlite3_errmsg(this->m_db) << ANSICodes::RESET << std::endl;
+    View::error_message(sqlite3_errmsg(this->m_db));
     return;
   }
 
@@ -85,7 +84,7 @@ void Database::read_colour(const std::string &sql, long id, Model::Colour &colou
   sqlite3_stmt *statement;
 
   if (sqlite3_prepare_v2(this->m_db, sql.c_str(), -1, &statement, nullptr) != SQLITE_OK) {
-    std::cerr << ANSICodes::RED << "Failed to prepare statement: " << sqlite3_errmsg(this->m_db) << ANSICodes::RESET << std::endl;
+    View::error_message(sqlite3_errmsg(this->m_db));
     return;
   }
 
@@ -104,14 +103,14 @@ bool Database::del(const std::string &table, int id)
   sqlite3_stmt *statement;
 
   if (sqlite3_prepare_v2(this->m_db, sql.c_str(), -1, &statement, nullptr) != SQLITE_OK) {
-    std::cerr << ANSICodes::RED << "Failed to prepare statement: " << sqlite3_errmsg(this->m_db) << ANSICodes::RESET << std::endl;
+    View::error_message(sqlite3_errmsg(this->m_db));
     return false;
   }
 
   sqlite3_bind_int(statement, 1, id);
 
   if (sqlite3_step(statement) != SQLITE_DONE) {
-    std::cerr << ANSICodes::RED << "Deleting failed: " << sqlite3_errmsg(this->m_db) << ANSICodes::RESET << std::endl;
+    View::error_message(sqlite3_errmsg(this->m_db));
     sqlite3_finalize(statement);
     return false;
   }
@@ -123,7 +122,7 @@ bool Database::del(const std::string &table, int id)
 bool Database::execute_sql(const std::string &sql) {
   char *error_message;
   if (sqlite3_exec(this->m_db, sql.c_str(), nullptr, 0, &error_message) != SQLITE_OK) {
-    std::cerr << ANSICodes::RED << "SQL Error: " << error_message << ANSICodes::RESET << std::endl;
+    View::error_message(error_message);
     sqlite3_free(error_message);
     return false;
   }

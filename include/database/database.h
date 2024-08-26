@@ -13,7 +13,7 @@
 class Database
 {
 public:
-    Database(const std::string &db_name);
+    Database(const std::string db_name);
     ~Database();
 
     bool initialize(const std::vector<std::string> &statements);

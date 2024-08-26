@@ -17,7 +17,8 @@ add_executable(bookofshadows main.cpp
     ../include/controllers/colourcontroller.h controllers/colourcontroller.cpp
     ../include/database/database.h database/database.cpp
     ../include/database/sqldata.h database/sqldata.cpp
-    ../include/view/input.h view/input.cpp)
+    ../include/view/input.h view/input.cpp
+    ../include/view/view.h view/view.cpp)
 
 target_include_directories(bookofshadows PUBLIC 
           $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>

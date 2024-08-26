@@ -4,6 +4,11 @@
 #include "../../include/menu/menu.h"
 #include "../../include/view/input.h"
 #include "../../include/model/colour.h"
+#include "../../include/database/database.h"
+#include "../../include/database/sqldata.h"
+#include "../../include/view/view.h"
+
+extern std::unique_ptr<Database> p_database;
 
 namespace
 {
@@ -46,6 +51,16 @@ namespace
     std::string meaning = Input::get_text("Enter the colour's meaning");
     
     Model::Colour colour {name, meaning};
+
+    std::string sql = "INSERT INTO colours(name, meaning) VALUES(?, ?)";
+    std::vector<SqlData> data {};
+    data.push_back(SqlData {"text", name});
+    data.push_back(SqlData {"text", meaning});
+
+    if (p_database->save(sql, data)) {
+      View::success_message("Colour saved successfully");
+    }
+
   }
 
 }
