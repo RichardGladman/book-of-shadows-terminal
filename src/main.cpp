@@ -6,6 +6,7 @@
 #include "../include/database/database.h"
 
 std::string get_db_filename();
+void create_tables();
 std::unique_ptr<Menu> make_main_menu();
 
 std::unique_ptr<Database> p_database;
@@ -14,6 +15,8 @@ int main()
 {
     std::string path = get_db_filename();
     p_database = std::make_unique<Database>(path);
+    create_tables();
+
     std::unique_ptr<Menu> main_menu = make_main_menu();
     char selection {};
 
@@ -57,4 +60,12 @@ std::string get_db_filename()
     }
 
     return filename;
+}
+
+void create_tables()
+{
+    std::vector<std::string> statements {};
+    statements.push_back("CREATE TABLE colours (id INT PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
+
+    p_database->initialize(statements);
 }
