@@ -1,4 +1,5 @@
 find_package(ansicodes REQUIRED)
+find_package(SQLite3 REQUIRED)
 
 add_executable(bookofshadows main.cpp
     ../include/model/baseentity.h model/baseentity.cpp
@@ -14,6 +15,8 @@ add_executable(bookofshadows main.cpp
     ../include/menu/menu.h menu/menu.cpp
     ../include/menu/option.h menu/option.cpp
     ../include/controllers/colourcontroller.h controllers/colourcontroller.cpp
+    ../include/database/database.h database/database.cpp
+    ../include/database/sqldata.h database/sqldata.cpp
     ../include/view/input.h view/input.cpp)
 
 target_include_directories(bookofshadows PUBLIC 
@@ -21,4 +24,4 @@ target_include_directories(bookofshadows PUBLIC
           $<BUILD_INTERFACE:/usr/local/include/ansicodes>
 )
 
-target_link_libraries(bookofshadows PRIVATE ansicodes::ansicodes_lib)
+target_link_libraries(bookofshadows PRIVATE ansicodes::ansicodes_lib PRIVATE ${SQLite3_LIBRARIES})
