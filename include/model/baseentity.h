@@ -6,7 +6,8 @@ namespace Model
     class BaseEntity
     {
     public:
-        BaseEntity(long id): id {id} {};
+        BaseEntity() = default;
+        BaseEntity(long id);
 
         long get_id() const;
         long get_created_at() const;

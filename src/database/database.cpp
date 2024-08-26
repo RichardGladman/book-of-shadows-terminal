@@ -105,7 +105,7 @@ bool Database::del(const std::string &table, int id)
 
   if (sqlite3_prepare_v2(this->m_db, sql.c_str(), -1, &statement, nullptr) != SQLITE_OK) {
     std::cerr << ANSICodes::RED << "Failed to prepare statement: " << sqlite3_errmsg(this->m_db) << ANSICodes::RESET << std::endl;
-    return;
+    return false;
   }
 
   sqlite3_bind_int(statement, 1, id);
