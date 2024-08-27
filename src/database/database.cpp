@@ -40,11 +40,10 @@ bool Database::save(const std::string &sql, const std::vector<SqlData> &data)
   }
 
   for (int i {}; i < data.size(); ++i) {
-    SqlData data_item = data.at(i);
-    if (data_item.type() == "text") {
-      sqlite3_bind_text(statement, i + 1, data_item.data().c_str(), data_item.data().length(), SQLITE_STATIC);
-    } else if (data_item.type() == "number") {
-      sqlite3_bind_int(statement, i + 1, std::stoi(data_item.data()));
+    if (data.at(i).type() == "text") {
+      sqlite3_bind_text(statement, i + 1, data.at(i).data().c_str(), data.at(i).data().length(), SQLITE_TRANSIENT);
+    } else if (data.at(i).type() == "number") {
+      sqlite3_bind_int(statement, i + 1, std::stoi(data.at(i).data()));
     } else {
       View::error_message("Invalid data type");
     }

@@ -50,8 +50,6 @@ namespace
     std::string name = Input::get_text("Enter the colour's name", 3);
     std::string meaning = Input::get_text("Enter the colour's meaning");
     
-    Model::Colour colour {name, meaning};
-
     std::string sql = "INSERT INTO colours(name, meaning) VALUES(?, ?)";
     std::vector<SqlData> data {};
     data.push_back(SqlData {"text", name});
