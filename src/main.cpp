@@ -65,7 +65,7 @@ std::string get_db_filename()
 void create_tables()
 {
     std::vector<std::string> statements {};
-    statements.push_back("CREATE TABLE colours (id INT PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS colours (id INT PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
 
     p_database->initialize(statements);
 }
