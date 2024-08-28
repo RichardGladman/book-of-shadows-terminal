@@ -6,7 +6,7 @@ namespace Model
     Colour::Colour(const std::string &name) : Colour { 0, name, ""} {}
     Colour::Colour(const std::string &name, const std::string &meaning) : Colour {0, name, meaning} {}
     Colour::Colour(int id, const std::string &name, const std::string &meaning) : BaseEntity {id}, m_name { name }, m_meaning { meaning } {}
-    Colour::Colour(const Colour &source) : Colour { source.m_name, source.m_meaning} {}
+    Colour::Colour(const Colour &source) : BaseEntity {source}, m_name {source.m_name}, m_meaning {source.m_meaning} {}
 
 
     std::string Colour::get_name() const

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <functional>
 #include <string>
 #include <vector>
 #include <sqlite3.h>
@@ -18,7 +19,7 @@ public:
 
     bool initialize(const std::vector<std::string> &statements);
     bool save(const std::string &sql, const std::vector<SqlData> &data);
-    void read_colours(const std::string &sql, std::vector<Model::Colour> &colours);
+    void read_colours(const std::string &sql, int (*callback)(void*, int, char**, char**));
     void read_colour(const std::string &sql, long id, Model::Colour &colour);
     bool del(const std::string &table, int id);
 
