@@ -1,4 +1,6 @@
 #include "../../include/model/colour.h"
+#include <iomanip>
+#include <sstream>
 
 namespace Model
 {
@@ -37,5 +39,12 @@ namespace Model
     bool Colour::operator==(const Colour &rhs) const
     {
         return id == rhs.id && m_name == rhs.m_name && m_meaning == rhs.m_meaning;
+    }
+
+    std::string Colour::to_string()
+    {
+        std::stringstream ss;
+        ss << std::left << std::setw(5) << this->id << std::setw(10) << this->m_name << this->m_meaning;
+        return ss.str();
     }
 }

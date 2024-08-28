@@ -10,6 +10,7 @@ class View
 public:
     static void error_message(const std::string &message);
     static void success_message(const std::string &message);
+    static void output(std::string_view message);
 private:
 
 };

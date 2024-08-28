@@ -22,6 +22,8 @@ namespace Model
         void set_name(std::string n);
         void set_meaning(std::string m);
 
+        std::string to_string();
+
         bool operator==(const Colour &rhs) const;
 
     private:

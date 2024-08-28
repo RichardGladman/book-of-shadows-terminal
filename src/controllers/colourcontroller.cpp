@@ -1,6 +1,8 @@
 #include "../include/controllers/colourcontroller.h"
 
+#include <iomanip>
 #include <memory>
+#include <sstream>
 #include "../../include/menu/menu.h"
 #include "../../include/view/input.h"
 #include "../../include/model/colour.h"
@@ -16,6 +18,7 @@ namespace
   std::unique_ptr<Menu> make_colour_menu();
   void add_colour();
   void edit_colour();
+  void list_colours();
 
   int callback(void *data, int column_count, char **column_data, char **col_names);
 
@@ -43,7 +46,7 @@ namespace
     std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Colours", "Enter your selection")};
     menu->add_option(Option {'A', "Add a Colour", add_colour});
     menu->add_option(Option {'E', "Edit an Colour", edit_colour});
-    menu->add_option(Option {'L', "List Colours", nullptr});
+    menu->add_option(Option {'L', "List Colours", list_colours});
     menu->add_option(Option {'V', "View an Option", nullptr});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
@@ -95,6 +98,30 @@ namespace
     if (p_database->save(sql, data)) {
       View::success_message("Colour saved successfully");
     }
+  }
+
+  void list_colours()
+  {
+
+    std::string sql = "SELECT * FROM colours";
+    
+    p_database->read_colours(sql, callback);
+    if (query_results->size() == 0) {
+      View::error_message("Colours not found");
+      return;
+    }
+
+    std::stringstream ss;
+
+    ss << "\n" << std::setw(80) << std::setfill('-') << "" << std::setfill(' ') << "\n";
+    ss << std::left << std::setw(5) << "Id" << std::setw(10) << "Colour" << "Meaning\n";
+    ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
+    View::output(ss.str());
+
+    for (Model::Colour &colour: *query_results) {
+      View::output(colour.to_string());
+    }
+
   }
 
   int callback(void *data, int column_count, char **column_data, char **col_names)
