@@ -45,9 +45,9 @@ namespace
   {
     std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Colours", "Enter your selection")};
     menu->add_option(Option {'A', "Add a Colour", add_colour});
-    menu->add_option(Option {'E', "Edit an Colour", edit_colour});
+    menu->add_option(Option {'E', "Edit a Colour", edit_colour});
     menu->add_option(Option {'L', "List Colours", list_colours});
-    menu->add_option(Option {'V', "View an Option", nullptr});
+    menu->add_option(Option {'D', "Delete a Colour", nullptr});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
     return menu;
