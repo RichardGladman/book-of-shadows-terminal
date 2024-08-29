@@ -4,7 +4,7 @@ namespace Model
 {
     static long next_id = 1;
 
-    BaseEntity::BaseEntity(int id): id {id}, created_at {0}, modified_at {0} {}
+    BaseEntity::BaseEntity(long id): id {id}, created_at {0}, modified_at {0} {}
 
     BaseEntity::BaseEntity(const BaseEntity &source) : id {source.id}, created_at {source.created_at}, modified_at {source.modified_at} {}
 

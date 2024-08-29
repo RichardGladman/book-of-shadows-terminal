@@ -3,6 +3,7 @@
 namespace Model
 {
     Polarity::Polarity() : Polarity {"", ""} {}
+    Polarity::Polarity(int id) : BaseEntity {id}, m_name {}, m_meaning{} {}
     Polarity::Polarity(const std::string &name, const std::string &meaning) : m_name {name}, m_meaning {meaning} {}
     Polarity::Polarity(const Polarity &source) : Polarity {source.m_name, source.m_meaning} {}
 

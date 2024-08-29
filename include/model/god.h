@@ -13,7 +13,7 @@ namespace Model
     public:
         God();
         God(const std::string &name, const std::string &type, const Polarity &polarity);
-        God(const std::string &name, const std::string &type, const Polarity &polarity, const std::string &description);
+        God(long id, const std::string &name, const std::string &type, const Polarity &polarity, const std::string &description);
         God(const God &source);
 
         std::string get_name() const;

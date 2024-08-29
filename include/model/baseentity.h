@@ -7,7 +7,7 @@ namespace Model
     {
     public:
         BaseEntity() = default;
-        BaseEntity(int id);
+        BaseEntity(long id);
 
         BaseEntity(const BaseEntity &source);
 

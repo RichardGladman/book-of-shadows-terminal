@@ -10,6 +10,7 @@ namespace Model
     {
     public:
         Polarity();
+        Polarity(int id);
         Polarity(const std::string &name, const std::string &meaning);
         Polarity(const Polarity &source);
 

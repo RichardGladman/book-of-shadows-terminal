@@ -2,16 +2,16 @@
 
 namespace Model
 {
-    God::God(): God {"", "", Polarity {}, ""} {}
+    God::God(): God {0, "", "", Polarity {}, ""} {}
 
     God::God(const std::string &name, const std::string &type, const Polarity &polarity) :
-            God {name, type, polarity, ""} {}
+            God {0, name, type, polarity, ""} {}
 
-    God::God(const std::string &name, const std::string &type, const Polarity &polarity, const std::string &description):
-            m_name {name}, m_type {type}, m_polarity {polarity}, m_description {description} {}
+    God::God(long id, const std::string &name, const std::string &type, const Polarity &polarity, const std::string &description):
+            BaseEntity {id}, m_name {name}, m_type {type}, m_polarity {polarity}, m_description {description} {}
 
     God::God(const God &source) :
-            God {source.m_name, source.m_type, source.m_polarity, source.m_description} {}
+            God {source.id, source.m_name, source.m_type, source.m_polarity, source.m_description} {}
 
     std::string God::get_name() const
     {
