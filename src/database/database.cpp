@@ -91,7 +91,7 @@ bool Database::del(const std::string &table, int id)
   std::string sql = "DELETE FROM " + table + " WHERE id = ?";
   sqlite3_stmt *statement;
 
-  if (sqlite3_prepare_v2(this->m_db, sql.c_str(), -1, &statement, nullptr) != SQLITE_OK) {
+  if (sqlite3_prepare_v2(this->m_db, sql.c_str(), sql.length(), &statement, nullptr) != SQLITE_OK) {
     View::error_message(sqlite3_errmsg(this->m_db));
     return false;
   }
@@ -105,7 +105,7 @@ bool Database::del(const std::string &table, int id)
   }
 
   sqlite3_finalize(statement);
-  return false;
+  return true;
 }
 
 bool Database::execute_sql(const std::string &sql) {

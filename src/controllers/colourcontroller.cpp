@@ -19,6 +19,7 @@ namespace
   void add_colour();
   void edit_colour();
   void list_colours();
+  void delete_colour();
 
   int callback(void *data, int column_count, char **column_data, char **col_names);
 
@@ -47,7 +48,7 @@ namespace
     menu->add_option(Option {'A', "Add a Colour", add_colour});
     menu->add_option(Option {'E', "Edit a Colour", edit_colour});
     menu->add_option(Option {'L', "List Colours", list_colours});
-    menu->add_option(Option {'D', "Delete a Colour", nullptr});
+    menu->add_option(Option {'D', "Delete a Colour", delete_colour});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
     return menu;
@@ -104,6 +105,8 @@ namespace
   {
 
     std::string sql = "SELECT * FROM colours";
+
+    query_results->clear();
     
     p_database->read_colours(sql, callback);
     if (query_results->size() == 0) {
@@ -122,6 +125,33 @@ namespace
       View::output(colour.to_string());
     }
 
+  }
+
+  void delete_colour()
+  {
+    std::string to_delete = Input::get_text("Enter the colour's name");
+    if (to_delete.size() == 0) {
+      return;
+    }
+
+    std::string sql = "SELECT * FROM colours WHERE name LIKE '" + to_delete + "'";
+
+    query_results->clear();
+    
+    p_database->read_colours(sql, callback);
+    if (query_results->size() == 0) {
+      View::error_message("Colour " + to_delete + " not found");
+      return;
+    }
+
+    int id = query_results->at(0).get_id();
+
+    if (p_database->del("colours", id)) {
+      View::success_message("Colour '" + to_delete + "' deleted");
+    } else {
+      View::error_message("Colour '" + to_delete + "' not deleted");
+    }
+  
   }
 
   int callback(void *data, int column_count, char **column_data, char **col_names)
