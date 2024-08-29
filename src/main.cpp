@@ -67,6 +67,8 @@ void create_tables()
 {
     std::vector<std::string> statements {};
     statements.push_back("CREATE TABLE IF NOT EXISTS colours (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
+    statements.push_back(std::string("CREATE TABLE IF NOT EXISTS gods (id INTEGER PRIMARY KEY, name VARCHAR(255), type VARCHAR(255)") +
+                            ", polarity INTEGER, meaning VARCHAR(255));");
 
     p_database->initialize(statements);
 }
