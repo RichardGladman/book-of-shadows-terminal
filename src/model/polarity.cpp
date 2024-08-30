@@ -2,10 +2,10 @@
 
 namespace Model
 {
-    Polarity::Polarity() : Polarity {"", ""} {}
+    Polarity::Polarity() : Polarity {0, "", ""} {}
     Polarity::Polarity(int id) : BaseEntity {id}, m_name {}, m_meaning{} {}
-    Polarity::Polarity(const std::string &name, const std::string &meaning) : m_name {name}, m_meaning {meaning} {}
-    Polarity::Polarity(const Polarity &source) : Polarity {source.m_name, source.m_meaning} {}
+    Polarity::Polarity(int id, const std::string &name, const std::string &meaning) : m_name {name}, m_meaning {meaning} {}
+    Polarity::Polarity(const Polarity &source) : Polarity {source.id, source.m_name, source.m_meaning} {}
 
     std::string Polarity::get_name() const
     {

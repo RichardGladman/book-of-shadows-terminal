@@ -17,6 +17,9 @@ namespace
 {
   std::unique_ptr<Menu> make_polarity_menu();
   void add_polarity();
+  void edit_colour();
+
+  int callback(void *data, int column_count, char **column_data, char **col_names);
 }
 
 void handle_polarity_menu()
@@ -40,7 +43,7 @@ namespace
   {
     std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Polarities", "Enter your selection")};
     menu->add_option(Option {'A', "Add a Polarity", add_polarity});
-    menu->add_option(Option {'E', "Edit a Polarity", nullptr});
+    menu->add_option(Option {'E', "Edit a Polarity", edit_colour});
     menu->add_option(Option {'L', "List Polarities", nullptr});
     menu->add_option(Option {'D', "Delete a Polarity", nullptr});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
@@ -61,5 +64,44 @@ namespace
     if (p_database->save(sql, data)) {
       View::success_message("Polarity saved successfully");
     }
+  }
+
+  void edit_colour()
+  {
+    std::string to_edit = Input::get_text("Enter the polarity's name");
+    if (to_edit.size() == 0) {
+      return;
+    }
+
+    std::string sql = "SELECT * FROM polarities WHERE name LIKE '" + to_edit + "'";
+    
+    p_database->read(sql, callback);
+    if (polarity_results->size() == 0) {
+      View::error_message("Polarity " + to_edit + " not found");
+      return;
+    }
+
+    Model::Polarity polarity = polarity_results->at(0);
+
+    polarity.set_name(Input::get_text("Enter polarity's name (blank for current)", 0, polarity.get_name()));
+    polarity.set_meaning(Input::get_text("Enter polarity's meaning (blank for current)", 0, polarity.get_meaning()));
+
+    sql = "UPDATE polarities SET name = ?, meaning = ? WHERE id = ?";
+
+    std::vector<SqlData> data {};
+    data.push_back(SqlData {"text", polarity.get_name()});
+    data.push_back(SqlData {"text", polarity.get_meaning()});
+    data.push_back(SqlData {"number", std::to_string(polarity.get_id())});
+
+    if (p_database->save(sql, data)) {
+      View::success_message("Polarity saved successfully");
+    }
+  }
+
+  int callback(void *data, int column_count, char **column_data, char **col_names)
+  {
+    polarity_results->push_back(Model::Polarity {std::atoi(column_data[0]), column_data[1], column_data[2]});
+
+    return 0;
   }
 }
