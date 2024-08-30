@@ -1,5 +1,8 @@
 #include <model/god.h>
 
+#include <iomanip>
+#include <sstream>
+
 namespace Model
 {
     God::God(): God {0, "", "", Polarity {}, ""} {}
@@ -56,5 +59,13 @@ namespace Model
     {
         return id == rhs.id && this->m_name == rhs.m_name && this->m_type == rhs.m_type && 
                 this->m_description == rhs.m_description && this->m_polarity == rhs.m_polarity;
+    }
+
+    std::string God::to_string()
+    {
+        std::stringstream ss;
+        ss << std::left << std::setw(5) << this->id << std::setw(10) << this->m_name 
+            << std::setw(10) << this->m_type << std::setw(10) << this->m_polarity.get_name() << this->m_description;
+        return ss.str();
     }
 }

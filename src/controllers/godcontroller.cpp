@@ -1,6 +1,8 @@
 #include "../../include/controllers/godcontroller.h"
 
+#include <iomanip>
 #include <memory>
+#include <sstream>
 
 #include "../../include/menu/menu.h"
 #include "../../include/menu/option.h"
@@ -19,6 +21,7 @@ namespace
   std::unique_ptr<Menu> make_god_menu();
   void add_god();
   void edit_god();
+  void list_gods();
 
   int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -45,7 +48,7 @@ namespace
     std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Colours", "Enter your selection")};
     menu->add_option(Option {'A', "Add a God", add_god});
     menu->add_option(Option {'E', "Edit a God", edit_god});
-    menu->add_option(Option {'L', "List Gods", nullptr});
+    menu->add_option(Option {'L', "List Gods", list_gods});
     menu->add_option(Option {'D', "Delete a God", nullptr});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
@@ -109,6 +112,32 @@ namespace
     if (p_database->save(sql, data)) {
       View::success_message("God saved successfully");
     }
+  }
+
+  void list_gods()
+  {
+
+    std::string sql = "SELECT * FROM gods";
+
+    god_results->clear();
+    
+    p_database->read_colours(sql, callback);
+    if (god_results->size() == 0) {
+      View::error_message("Gods not found");
+      return;
+    }
+
+    std::stringstream ss {};
+
+    ss << "\n" << std::setw(80) << std::setfill('-') << "" << std::setfill(' ') << "\n";
+    ss << std::left << std::setw(5) << "Id" << std::setw(10) << "God" << std::setw(10) << "Type" << std::setw(10) << "Polarity" << "Description\n";
+    ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
+    View::output(ss.str());
+
+    for (Model::God &god: *god_results) {
+      View::output(god.to_string());
+    }
+
   }
 
   int callback(void *data, int column_count, char **column_data, char **col_names)

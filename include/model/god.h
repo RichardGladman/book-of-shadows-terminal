@@ -28,6 +28,8 @@ namespace Model
 
         bool operator==(const God &rhs) const;
 
+        std::string to_string();
+
     private:
         std::string m_name;
         std::string m_type;
