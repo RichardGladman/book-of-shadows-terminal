@@ -70,6 +70,7 @@ void create_tables()
     statements.push_back("CREATE TABLE IF NOT EXISTS colours (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
     statements.push_back(std::string("CREATE TABLE IF NOT EXISTS gods (id INTEGER PRIMARY KEY, name VARCHAR(255), type VARCHAR(255)") +
                             ", polarity INTEGER, description VARCHAR(255));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS polarities (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
 
     p_database->initialize(statements);
 }
