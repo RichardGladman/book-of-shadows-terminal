@@ -22,6 +22,7 @@ namespace
   void add_god();
   void edit_god();
   void list_gods();
+  void delete_god();
 
   int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -49,7 +50,7 @@ namespace
     menu->add_option(Option {'A', "Add a God", add_god});
     menu->add_option(Option {'E', "Edit a God", edit_god});
     menu->add_option(Option {'L', "List Gods", list_gods});
-    menu->add_option(Option {'D', "Delete a God", nullptr});
+    menu->add_option(Option {'D', "Delete a God", delete_god});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
     return menu;
@@ -138,6 +139,33 @@ namespace
       View::output(god.to_string());
     }
 
+  }
+
+  void delete_god()
+  {
+    std::string to_delete = Input::get_text("Enter the godr's name");
+    if (to_delete.size() == 0) {
+      return;
+    }
+
+    std::string sql = "SELECT * FROM gods WHERE name LIKE '" + to_delete + "'";
+
+    god_results->clear();
+    
+    p_database->read_colours(sql, callback);
+    if (god_results->size() == 0) {
+      View::error_message("God " + to_delete + " not found");
+      return;
+    }
+
+    int id = god_results->at(0).get_id();
+
+    if (p_database->del("gods", id)) {
+      View::success_message("God '" + to_delete + "' deleted");
+    } else {
+      View::error_message("God '" + to_delete + "' not deleted");
+    }
+  
   }
 
   int callback(void *data, int column_count, char **column_data, char **col_names)
