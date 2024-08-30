@@ -78,7 +78,7 @@ namespace
 
     std::string sql = "SELECT * FROM colours WHERE name LIKE '" + to_edit + "'";
     
-    p_database->read_colours(sql, callback);
+    p_database->read(sql, callback);
     if (query_results->size() == 0) {
       View::error_message("Colour " + to_edit + " not found");
       return;
@@ -108,7 +108,7 @@ namespace
 
     query_results->clear();
     
-    p_database->read_colours(sql, callback);
+    p_database->read(sql, callback);
     if (query_results->size() == 0) {
       View::error_message("Colours not found");
       return;
@@ -138,7 +138,7 @@ namespace
 
     query_results->clear();
     
-    p_database->read_colours(sql, callback);
+    p_database->read(sql, callback);
     if (query_results->size() == 0) {
       View::error_message("Colour " + to_delete + " not found");
       return;

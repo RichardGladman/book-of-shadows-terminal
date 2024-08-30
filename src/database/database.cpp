@@ -59,31 +59,13 @@ bool Database::save(const std::string &sql, const std::vector<SqlData> &data)
   return true;
 }
 
-void Database::read_colours(const std::string &sql, int (*callback)(void*, int, char**, char**))
+void Database::read(const std::string &sql, int (*callback)(void*, int, char**, char**))
 {
   int exit = sqlite3_exec(this->m_db, sql.c_str(), callback, 0, nullptr);
 
   if (exit != SQLITE_OK) {
     View::error_message("Error selecting data");
   }
-}
-
-void Database::read_colour(const std::string &sql, long id, Model::Colour &colour)
-{
-  sqlite3_stmt *statement;
-
-  if (sqlite3_prepare_v2(this->m_db, sql.c_str(), -1, &statement, nullptr) != SQLITE_OK) {
-    View::error_message(sqlite3_errmsg(this->m_db));
-    return;
-  }
-
-  if (sqlite3_step(statement) == SQLITE_ROW) {
-    colour.set_id(sqlite3_column_int(statement, 0));
-    colour.set_name(reinterpret_cast<const char*>(sqlite3_column_text(statement, 1)));
-    colour.set_meaning(reinterpret_cast<const char*>(sqlite3_column_text(statement, 2)));
-  }
-
-  sqlite3_finalize(statement);
 }
 
 bool Database::del(const std::string &table, int id)

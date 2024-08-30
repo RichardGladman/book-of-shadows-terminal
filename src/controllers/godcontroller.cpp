@@ -86,7 +86,7 @@ namespace
 
     std::string sql = "SELECT * FROM gods WHERE name LIKE '" + to_edit + "'";
     
-    p_database->read_colours(sql, callback);
+    p_database->read(sql, callback);
     if (god_results->size() == 0) {
       View::error_message("God " + to_edit + " not found");
       return;
@@ -122,7 +122,7 @@ namespace
 
     god_results->clear();
     
-    p_database->read_colours(sql, callback);
+    p_database->read(sql, callback);
     if (god_results->size() == 0) {
       View::error_message("Gods not found");
       return;
@@ -152,7 +152,7 @@ namespace
 
     god_results->clear();
     
-    p_database->read_colours(sql, callback);
+    p_database->read(sql, callback);
     if (god_results->size() == 0) {
       View::error_message("God " + to_delete + " not found");
       return;
