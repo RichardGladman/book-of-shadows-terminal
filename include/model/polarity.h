@@ -10,8 +10,8 @@ namespace Model
     {
     public:
         Polarity();
-        Polarity(int id);
-        Polarity(int id, const std::string &name, const std::string &meaning);
+        Polarity(long id);
+        Polarity(long id, const std::string &name, const std::string &meaning);
         Polarity(const Polarity &source);
 
         std::string get_name() const;
@@ -21,6 +21,8 @@ namespace Model
         void set_meaning(std::string m);
 
         bool operator==(const Polarity &rhs) const;
+
+        std::string to_string() const;
 
     private:
         std::string m_name;

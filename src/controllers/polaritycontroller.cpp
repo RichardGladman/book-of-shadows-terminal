@@ -1,6 +1,8 @@
 #include "../../include/controllers/polaritycontroller.h"
 
+#include <iomanip>
 #include <memory>
+#include <sstream>
 
 #include "../../include/menu/menu.h"
 #include "../../include/menu/option.h"
@@ -18,6 +20,7 @@ namespace
   std::unique_ptr<Menu> make_polarity_menu();
   void add_polarity();
   void edit_colour();
+  void list_polarities();
 
   int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -44,7 +47,7 @@ namespace
     std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Polarities", "Enter your selection")};
     menu->add_option(Option {'A', "Add a Polarity", add_polarity});
     menu->add_option(Option {'E', "Edit a Polarity", edit_colour});
-    menu->add_option(Option {'L', "List Polarities", nullptr});
+    menu->add_option(Option {'L', "List Polarities", list_polarities});
     menu->add_option(Option {'D', "Delete a Polarity", nullptr});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
@@ -96,6 +99,32 @@ namespace
     if (p_database->save(sql, data)) {
       View::success_message("Polarity saved successfully");
     }
+  }
+
+  void list_polarities()
+  {
+
+    std::string sql = "SELECT * FROM polarities";
+
+    polarity_results->clear();
+    
+    p_database->read(sql, callback);
+    if (polarity_results->size() == 0) {
+      View::error_message("Polarities not found");
+      return;
+    }
+
+    std::stringstream ss;
+
+    ss << "\n" << std::setw(80) << std::setfill('-') << "" << std::setfill(' ') << "\n";
+    ss << std::left << std::setw(5) << "Id" << std::setw(10) << "Colour" << "Meaning\n";
+    ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
+    View::output(ss.str());
+
+    for (const Model::Polarity &polarity: *polarity_results) {
+      View::output(polarity.to_string());
+    }
+
   }
 
   int callback(void *data, int column_count, char **column_data, char **col_names)
