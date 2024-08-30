@@ -16,6 +16,7 @@ add_executable(bookofshadows main.cpp
     ../include/menu/option.h menu/option.cpp
     ../include/controllers/colourcontroller.h controllers/colourcontroller.cpp
     ../include/controllers/godcontroller.h controllers/godcontroller.cpp
+    ../include/controllers/polaritycontroller.h controllers/polaritycontroller.cpp
     ../include/database/database.h database/database.cpp
     ../include/database/sqldata.h database/sqldata.cpp
     ../include/view/input.h view/input.cpp

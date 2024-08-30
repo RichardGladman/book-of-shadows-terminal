@@ -4,6 +4,7 @@
 #include "../include/menu/option.h"
 #include "../include/controllers/colourcontroller.h"
 #include "../include/controllers/godcontroller.h"
+#include "../include/controllers/polaritycontroller.h"
 #include "../include/database/database.h"
 
 std::string get_db_filename();
@@ -40,7 +41,7 @@ std::unique_ptr<Menu> make_main_menu()
     main_menu->add_option(Option {'C', "Manage Colours", handle_colour_menu});
     main_menu->add_option(Option {'G', "Manage Gods", handle_god_menu});
     main_menu->add_option(Option {'H', "Manage Herbs", nullptr});
-    main_menu->add_option(Option {'P', "Manage Planets", nullptr});
+    main_menu->add_option(Option {'P', "Manage Polarities", handle_polarity_menu});
     main_menu->add_option(Option {'L', "Manage Planets", nullptr});
     main_menu->add_option(Option {'E', "Manage Trees", nullptr});
     main_menu->add_option(Option {'Z', "Manage Zodiacs", nullptr});
