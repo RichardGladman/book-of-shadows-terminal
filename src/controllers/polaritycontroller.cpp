@@ -21,6 +21,7 @@ namespace
   void add_polarity();
   void edit_colour();
   void list_polarities();
+  void delete_polarity();
 
   int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -48,7 +49,7 @@ namespace
     menu->add_option(Option {'A', "Add a Polarity", add_polarity});
     menu->add_option(Option {'E', "Edit a Polarity", edit_colour});
     menu->add_option(Option {'L', "List Polarities", list_polarities});
-    menu->add_option(Option {'D', "Delete a Polarity", nullptr});
+    menu->add_option(Option {'D', "Delete a Polarity", delete_polarity});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
     return menu;
@@ -125,6 +126,33 @@ namespace
       View::output(polarity.to_string());
     }
 
+  }
+
+  void delete_polarity()
+  {
+    std::string to_delete = Input::get_text("Enter the polarity's name");
+    if (to_delete.size() == 0) {
+      return;
+    }
+
+    std::string sql = "SELECT * FROM polarities WHERE name LIKE '" + to_delete + "'";
+
+    polarity_results->clear();
+    
+    p_database->read(sql, callback);
+    if (polarity_results->size() == 0) {
+      View::error_message("Polarity " + to_delete + " not found");
+      return;
+    }
+
+    int id = polarity_results->at(0).get_id();
+
+    if (p_database->del("polarities", id)) {
+      View::success_message("Polarity '" + to_delete + "' deleted");
+    } else {
+      View::error_message("Polarity '" + to_delete + "' not deleted");
+    }
+  
   }
 
   int callback(void *data, int column_count, char **column_data, char **col_names)
