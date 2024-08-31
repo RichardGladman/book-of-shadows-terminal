@@ -19,6 +19,7 @@ namespace
     void add_planet();
     void edit_planet();
     void list_planets();
+    void delete_planet();
 
     int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -46,7 +47,7 @@ namespace
         menu->add_option(Option {'A', "Add a Planet", add_planet});
         menu->add_option(Option {'E', "Edit a Planet", edit_planet});
         menu->add_option(Option {'L', "List Planet", list_planets});
-        menu->add_option(Option {'D', "Delete a Planet", nullptr});
+        menu->add_option(Option {'D', "Delete a Planet", delete_planet});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
         return menu;
@@ -121,6 +122,32 @@ namespace
 
         for (const Model::Planet &planet: *planet_results) {
             View::output(planet.to_string());
+        }
+    }
+
+    void delete_planet()
+    {
+        std::string to_delete = Input::get_text("Enter the planet's name");
+        if (to_delete.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM planets WHERE name LIKE '" + to_delete + "'";
+
+        planet_results->clear();
+
+        p_database->read(sql, callback);
+        if (planet_results->size() == 0) {
+            View::error_message("Planet '" + to_delete + "' not found");
+            return;
+        }
+
+        int id = planet_results->at(0).get_id();
+
+        if (p_database->del("planets", id)) {
+            View::success_message("Planet '" + to_delete + "' deleted");
+        } else {
+            View::error_message("Planet '" + to_delete + "' not deleted");
         }
     }
 

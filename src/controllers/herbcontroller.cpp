@@ -121,8 +121,8 @@ namespace
         ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
         View::output(ss.str());
 
-        for (const Model::Herb &polarity: *herb_results) {
-            View::output(polarity.to_string());
+        for (const Model::Herb &herb: *herb_results) {
+            View::output(herb.to_string());
         }
 
     }
