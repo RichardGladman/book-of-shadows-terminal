@@ -22,6 +22,8 @@ namespace Model
 
         bool operator==(const Herb &rhs) const;
 
+        std::string to_string() const;
+
     protected:
         std::string m_name;
         std::string m_description;

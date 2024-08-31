@@ -1,5 +1,8 @@
 #include "model/herb.h"
 
+#include <iomanip>
+#include <sstream>
+
 namespace Model
 {
     Herb::Herb() : Herb {0, "", ""} {}
@@ -29,5 +32,12 @@ namespace Model
     bool Herb::operator==(const Herb &rhs) const
     {
         return id == rhs.id && this->m_name == rhs.m_name && this->m_description == rhs.m_description;
+    }
+
+    std::string Herb::to_string() const
+    {
+        std::stringstream ss;
+        ss << std::left << std::setw(5) << this->id << std::setw(10) << this->m_name << this->m_description;
+        return ss.str();
     }
 }
