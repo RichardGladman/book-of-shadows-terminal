@@ -5,6 +5,7 @@
 #include "../include/controllers/colourcontroller.h"
 #include "../include/controllers/godcontroller.h"
 #include "../include/controllers/herbcontroller.h"
+#include "../include/controllers/planetcontroller.h"
 #include "../include/controllers/polaritycontroller.h"
 #include "../include/database/database.h"
 
@@ -42,8 +43,8 @@ std::unique_ptr<Menu> make_main_menu()
     main_menu->add_option(Option {'C', "Manage Colours", handle_colour_menu});
     main_menu->add_option(Option {'G', "Manage Gods", handle_god_menu});
     main_menu->add_option(Option {'H', "Manage Herbs", handle_herb_menu});
+    main_menu->add_option(Option {'L', "Manage Planets", handle_planet_menu});
     main_menu->add_option(Option {'P', "Manage Polarities", handle_polarity_menu});
-    main_menu->add_option(Option {'L', "Manage Planets", nullptr});
     main_menu->add_option(Option {'E', "Manage Trees", nullptr});
     main_menu->add_option(Option {'Z', "Manage Zodiacs", nullptr});
     main_menu->add_option(Option {'Q', "Quit", nullptr});
@@ -73,6 +74,7 @@ void create_tables()
                             ", polarity INTEGER, description VARCHAR(255));");
     statements.push_back("CREATE TABLE IF NOT EXISTS polarities (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
     statements.push_back("CREATE TABLE IF NOT EXISTS herbs (id INTEGER PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS planets (id INTEGER PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));");
 
     p_database->initialize(statements);
 }

@@ -21,7 +21,8 @@ add_executable(bookofshadows main.cpp
     ../include/database/database.h database/database.cpp
     ../include/database/sqldata.h database/sqldata.cpp
     ../include/view/input.h view/input.cpp
-    ../include/view/view.h view/view.cpp)
+    ../include/view/view.h view/view.cpp
+    ../include/controllers/planetcontroller.h controllers/planetcontroller.cpp)
 
 target_include_directories(bookofshadows PUBLIC 
           $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
