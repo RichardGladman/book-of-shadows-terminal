@@ -15,6 +15,7 @@
 
 extern std::unique_ptr<Database> p_database;
 std::unique_ptr<std::vector<Model::God>> god_results = std::make_unique<std::vector<Model::God>>();
+std::unique_ptr<std::vector<Model::Polarity>> god_polarity_results = std::make_unique<std::vector<Model::Polarity>>();
 
 namespace
 {
@@ -25,6 +26,7 @@ namespace
   void delete_god();
 
   int callback(void *data, int column_count, char **column_data, char **col_names);
+  int create_polarity(void *data, int column_count, char **column_data, char **col_names);
 }
 
 void handle_god_menu()
@@ -62,15 +64,24 @@ namespace
     std::string type = Input::get_text("Enter the god's type");
     std::string description = Input::get_text("Enter the god's description");
 
-    // Todo: Revisit when Polarity is added
-    int polarity = Input::get_number("Enter the god's polarity id", 1);
+    god_polarity_results->clear();
+
+    std::string pol_name = Input::get_text("Enter the god's polarity", 4);
+    std::string sql = "SELECT * FROM polarities WHERE name = '" + pol_name + "'";
+    p_database->read(sql, create_polarity);
+    Model::Polarity polarity;
+    if (god_polarity_results->size() > 0) {
+      polarity = god_polarity_results->at(0);
+    } else {
+      polarity = Model::Polarity {0, "", ""};
+    }
     
-    std::string sql = "INSERT INTO gods(name, description, type, polarity) VALUES(?, ?, ?, ?)";
+    sql = "INSERT INTO gods(name, description, type, polarity) VALUES(?, ?, ?, ?)";
     std::vector<SqlData> data {};
     data.push_back(SqlData {"text", name});
     data.push_back(SqlData {"text", description});
     data.push_back(SqlData {"text", type});
-    data.push_back(SqlData {"number", std::to_string(polarity)});
+    data.push_back(SqlData {"number", std::to_string(polarity.get_id())});
 
     if (p_database->save(sql, data)) {
       View::success_message("God saved successfully");
@@ -98,8 +109,16 @@ namespace
     god.set_type(Input::get_text("Enter the god's type (blank for current)", 0, god.get_type()));
     god.set_description(Input::get_text("Enter god's description (blank for current)", 0, god.get_description()));
 
-    // Todo: Revisit when Polarity done
-    god.set_polarity(Model::Polarity (Input::get_number("Enter the god's polarity id", 1)));
+    god_polarity_results->clear();
+
+    std::string pol_name = Input::get_text("Enter the god's polarity", 0, god.get_polarity().get_name());
+    sql = "SELECT * FROM polarities WHERE name = '" + pol_name + "'";
+    p_database->read(sql, create_polarity);
+    if (god_polarity_results->size() > 0) {
+      god.set_polarity(god_polarity_results->at(0));
+    } else {
+      god.set_polarity(Model::Polarity {0, "", ""});
+    }
 
     sql = "UPDATE gods SET name = ?, description = ?, type = ?, polarity = ? WHERE id = ?;";
     
@@ -118,7 +137,7 @@ namespace
   void list_gods()
   {
 
-    std::string sql = "SELECT * FROM gods";
+    std::string sql = "SELECT * FROM gods g LEFT JOIN polarities p ON g.polarity = p.id";
 
     god_results->clear();
     
@@ -170,8 +189,20 @@ namespace
 
   int callback(void *data, int column_count, char **column_data, char **col_names)
   {
-    god_results->push_back(Model::God {std::atoi(column_data[0]), column_data[1], column_data[2], 
-      Model::Polarity(std::atoi(column_data[3])), column_data[4]});
+    if (column_count == 5) {
+      god_results->push_back(Model::God {std::atoi(column_data[0]), column_data[1], column_data[2], 
+        Model::Polarity(std::atoi(column_data[3])), column_data[4]});
+    } else {
+      god_results->push_back(Model::God {std::atoi(column_data[0]), column_data[1], column_data[2], 
+        Model::Polarity(std::atoi(column_data[5]), column_data[6], column_data[7]), column_data[4]});
+    }
+
+    return 0;
+  }
+
+  int create_polarity(void *data, int column_count, char **column_data, char **col_names)
+  {
+    god_polarity_results->push_back(Model::Polarity {std::atoi(column_data[0]), column_data[1], column_data[2]});
 
     return 0;
   }
