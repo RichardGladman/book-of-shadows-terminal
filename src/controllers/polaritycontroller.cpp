@@ -19,7 +19,7 @@ namespace
 {
   std::unique_ptr<Menu> make_polarity_menu();
   void add_polarity();
-  void edit_colour();
+  void edit_polarity();
   void list_polarities();
   void delete_polarity();
 
@@ -47,7 +47,7 @@ namespace
   {
     std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Polarities", "Enter your selection")};
     menu->add_option(Option {'A', "Add a Polarity", add_polarity});
-    menu->add_option(Option {'E', "Edit a Polarity", edit_colour});
+    menu->add_option(Option {'E', "Edit a Polarity", edit_polarity});
     menu->add_option(Option {'L', "List Polarities", list_polarities});
     menu->add_option(Option {'D', "Delete a Polarity", delete_polarity});
     menu->add_option(Option {'B', "Back to Main Menu", nullptr});
@@ -70,7 +70,7 @@ namespace
     }
   }
 
-  void edit_colour()
+  void edit_polarity()
   {
     std::string to_edit = Input::get_text("Enter the polarity's name");
     if (to_edit.size() == 0) {
