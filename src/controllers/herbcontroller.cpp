@@ -19,6 +19,7 @@ namespace
     void add_herb();
     void edit_herb();
     void list_herbs();
+    void delete_herb();
 
     int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -47,7 +48,7 @@ namespace
         menu->add_option(Option {'A', "Add a Herb", add_herb});
         menu->add_option(Option {'E', "Edit a Herb", edit_herb});
         menu->add_option(Option {'L', "List Herbs", list_herbs});
-        menu->add_option(Option {'D', "Delete a Herb", nullptr});
+        menu->add_option(Option {'D', "Delete a Herb", delete_herb});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
         return menu;
@@ -122,6 +123,33 @@ namespace
 
         for (const Model::Herb &polarity: *herb_results) {
             View::output(polarity.to_string());
+        }
+
+    }
+
+    void delete_herb()
+    {
+        std::string to_delete = Input::get_text("Enter the herb's name");
+        if (to_delete.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM herbs WHERE name LIKE '" + to_delete + "'";
+
+        herb_results->clear();
+
+        p_database->read(sql, callback);
+        if (herb_results->size() == 0) {
+            View::error_message("Herb " + to_delete + " not found");
+            return;
+        }
+
+        int id = herb_results->at(0).get_id();
+
+        if (p_database->del("herbs", id)) {
+            View::success_message("Herb '" + to_delete + "' deleted");
+        } else {
+            View::error_message("Herb '" + to_delete + "' not deleted");
         }
 
     }
