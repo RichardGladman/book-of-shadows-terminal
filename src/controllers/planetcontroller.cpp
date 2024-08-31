@@ -18,6 +18,7 @@ namespace
     std::unique_ptr<Menu> make_planet_menu();
     void add_planet();
     void edit_planet();
+    void list_planets();
 
     int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -44,7 +45,7 @@ namespace
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Polarities", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Planet", add_planet});
         menu->add_option(Option {'E', "Edit a Planet", edit_planet});
-        menu->add_option(Option {'L', "List Planet", nullptr});
+        menu->add_option(Option {'L', "List Planet", list_planets});
         menu->add_option(Option {'D', "Delete a Planet", nullptr});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
@@ -96,6 +97,30 @@ namespace
 
         if (p_database->save(sql, data)) {
             View::success_message("Planet saved successfully");
+        }
+    }
+
+    void list_planets()
+    {
+        std::string sql = "SELECT * FROM planets";
+
+        planet_results->clear();
+
+        p_database->read(sql, callback);
+        if (planet_results->size() == 0) {
+            View::error_message("Planets not found");
+            return;
+        }
+
+        std::stringstream ss;
+
+        ss << "\n" << std::setw(80) << std::setfill('-') << "" << std::setfill(' ') << "\n";
+        ss << std::left << std::setw(5) << "Id" << std::setw(10) << "Planet" << "Description\n";
+        ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
+        View::output(ss.str());
+
+        for (const Model::Planet &planet: *planet_results) {
+            View::output(planet.to_string());
         }
     }
 

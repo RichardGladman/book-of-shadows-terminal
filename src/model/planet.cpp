@@ -1,5 +1,8 @@
 #include "model/planet.h"
 
+#include <iomanip>
+#include <sstream>
+
 namespace Model
 {
     Planet::Planet() : Planet {0, "", ""} {}
@@ -28,5 +31,12 @@ namespace Model
 
     bool Planet::operator==(const Planet &rhs) const {
         return this->id == rhs.id && this->m_name == rhs.m_name && this->m_description == rhs.m_description;
+    }
+
+    std::string Planet::to_string() const
+    {
+        std::stringstream ss;
+        ss << std::left << std::setw(5) << this->id << std::setw(10) << this->m_name << this->m_description;
+        return ss.str();
     }
 }
