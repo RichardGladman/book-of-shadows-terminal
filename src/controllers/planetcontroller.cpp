@@ -10,10 +10,16 @@
 #include "../../include/view/input.h"
 #include "../../include/view/view.h"
 
+extern std::unique_ptr<Database> p_database;
+std::unique_ptr<std::vector<Model::Planet>> planet_results = std::make_unique<std::vector<Model::Planet>>();
 
 namespace
 {
     std::unique_ptr<Menu> make_planet_menu();
+    void add_planet();
+    void edit_planet();
+
+    int callback(void *data, int column_count, char **column_data, char **col_names);
 }
 
 void handle_planet_menu()
@@ -36,12 +42,67 @@ namespace
     std::unique_ptr<Menu> make_planet_menu()
     {
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Polarities", "Enter your selection")};
-        menu->add_option(Option {'A', "Add a Planet", nullptr});
-        menu->add_option(Option {'E', "Edit a Planet", nullptr});
+        menu->add_option(Option {'A', "Add a Planet", add_planet});
+        menu->add_option(Option {'E', "Edit a Planet", edit_planet});
         menu->add_option(Option {'L', "List Planet", nullptr});
         menu->add_option(Option {'D', "Delete a Planet", nullptr});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
         return menu;
+    }
+
+    void add_planet()
+    {
+        std::string name = Input::get_text("Enter the planet's name", 2);
+        std::string description = Input::get_text("Enter the planet's description");
+
+        std::string sql = "INSERT INTO planets(name, description) VALUES(?, ?)";
+        std::vector<SqlData> data {};
+        data.push_back(SqlData {"text", name});
+        data.push_back(SqlData {"text", description});
+
+        if (p_database->save(sql, data)) {
+            View::success_message("Planet saved successfully");
+        }
+    }
+
+    void edit_planet()
+    {
+        std::string to_edit = Input::get_text("Enter the planets's name");
+        if (to_edit.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM planets WHERE name LIKE '" + to_edit + "'";
+
+        planet_results->clear();
+        p_database->read(sql, callback);
+        if (planet_results->size() == 0) {
+            View::error_message("Planet " + to_edit + " not found");
+            return;
+        }
+
+        Model::Planet planet = planet_results->at(0);
+
+        planet.set_name(Input::get_text("Enter planet's name (blank for current)", 0, planet.get_name()));
+        planet.set_description(Input::get_text("Enter planet's description (blank for current)", 0, planet.get_description()));
+
+        sql = "UPDATE planets SET name = ?, description = ? WHERE id = ?";
+
+        std::vector<SqlData> data {};
+        data.push_back(SqlData {"text", planet.get_name()});
+        data.push_back(SqlData {"text", planet.get_description()});
+        data.push_back(SqlData {"number", std::to_string(planet.get_id())});
+
+        if (p_database->save(sql, data)) {
+            View::success_message("Planet saved successfully");
+        }
+    }
+
+    int callback(void *data, int column_count, char **column_data, char **col_names)
+    {
+        planet_results->push_back(Model::Planet {std::atoi(column_data[0]), column_data[1], column_data[2]});
+
+        return 0;
     }
 }

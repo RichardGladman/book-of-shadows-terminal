@@ -2,9 +2,9 @@
 
 namespace Model
 {
-    Planet::Planet() : Planet {"", ""} {}
-    Planet::Planet(const std::string &name, const std::string &description) : m_name {name}, m_description {description} {}
-    Planet::Planet(const Planet &source) : Planet {source.m_name, source.m_description} {}
+    Planet::Planet() : Planet {0, "", ""} {}
+    Planet::Planet(long id, const std::string &name, const std::string &description) : BaseEntity(id), m_name {name}, m_description {description} {}
+    Planet::Planet(const Planet &source) : Planet {source.id, source.m_name, source.m_description} {}
 
     std::string Planet::get_name() const
     {
@@ -23,7 +23,7 @@ namespace Model
 
     void Planet::set_description(std::string description)
     {
-        this->m_name = description;
+        this->m_description = description;
     }
 
     bool Planet::operator==(const Planet &rhs) const {

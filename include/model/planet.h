@@ -10,7 +10,7 @@ namespace Model
     {
     public:
         Planet();
-        Planet(const std::string &name, const std::string &description);
+        Planet(long id, const std::string &name, const std::string &description);
         Planet(const Planet &source);
 
         std::string get_name() const;
