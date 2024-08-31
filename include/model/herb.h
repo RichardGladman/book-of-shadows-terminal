@@ -11,7 +11,7 @@ namespace Model
     {
     public:
         Herb();
-        Herb(const std::string &name, const std::string &description);
+        Herb(long id, const std::string &name, const std::string &description);
         Herb(const Herb &source);
 
         std::string get_name() const;

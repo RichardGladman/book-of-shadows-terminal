@@ -17,6 +17,9 @@ namespace
 {
     std::unique_ptr<Menu> make_herb_menu();
     void add_herb();
+    void edit_herb();
+
+    int callback(void *data, int column_count, char **column_data, char **col_names);
 }
 
 
@@ -41,7 +44,7 @@ namespace
     {
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Polarities", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Herb", add_herb});
-        menu->add_option(Option {'E', "Edit a Herb", nullptr});
+        menu->add_option(Option {'E', "Edit a Herb", edit_herb});
         menu->add_option(Option {'L', "List Herbs", nullptr});
         menu->add_option(Option {'D', "Delete a Herb", nullptr});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
@@ -62,5 +65,44 @@ namespace
         if (p_database->save(sql, data)) {
             View::success_message("Herb saved successfully");
         }
+    }
+
+    void edit_herb()
+    {
+        std::string to_edit = Input::get_text("Enter the herb's name");
+        if (to_edit.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM herbs WHERE name LIKE '" + to_edit + "'";
+
+        p_database->read(sql, callback);
+        if (herb_results->size() == 0) {
+            View::error_message("Herb " + to_edit + " not found");
+            return;
+        }
+
+        Model::Herb herb = herb_results->at(0);
+
+        herb.set_name(Input::get_text("Enter herb's name (blank for current)", 0, herb.get_name()));
+        herb.set_description(Input::get_text("Enter herb's description (blank for current)", 0, herb.get_description()));
+
+        sql = "UPDATE herbs SET name = ?, description = ? WHERE id = ?";
+
+        std::vector<SqlData> data {};
+        data.push_back(SqlData {"text", herb.get_name()});
+        data.push_back(SqlData {"text", herb.get_description()});
+        data.push_back(SqlData {"number", std::to_string(herb.get_id())});
+
+        if (p_database->save(sql, data)) {
+            View::success_message("Herb saved successfully");
+        }
+    }
+
+    int callback(void *data, int column_count, char **column_data, char **col_names)
+    {
+        herb_results->push_back(Model::Herb {std::atoi(column_data[0]), column_data[1], column_data[2]});
+
+        return 0;
     }
 }

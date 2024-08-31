@@ -2,9 +2,9 @@
 
 namespace Model
 {
-    Herb::Herb() : Herb {"", ""} {}
-    Herb::Herb(const std::string &name, const std::string &description) : m_name {name}, m_description {description} {}
-    Herb::Herb(const Herb &source) : Herb { source.m_name, source.m_description} {}
+    Herb::Herb() : Herb {0, "", ""} {}
+    Herb::Herb(long id, const std::string &name, const std::string &description) : BaseEntity {id}, m_name {name}, m_description {description} {}
+    Herb::Herb(const Herb &source) : Herb { source.id, source.m_name, source.m_description} {}
 
     std::string Herb::get_name() const
     {
