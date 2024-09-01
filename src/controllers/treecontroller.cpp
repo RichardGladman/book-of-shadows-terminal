@@ -19,6 +19,7 @@ namespace
 
     void add_tree();
     void edit_tree();
+    void list_trees();
 
     int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -45,7 +46,7 @@ namespace
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Trees", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Tree", add_tree});
         menu->add_option(Option {'E', "Edit a Tree", edit_tree});
-        menu->add_option(Option {'L', "List Trees", nullptr});
+        menu->add_option(Option {'L', "List Trees", list_trees});
         menu->add_option(Option {'D', "Delete a Tree", nullptr});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
@@ -96,6 +97,30 @@ namespace
 
         if (p_database->save(sql, data)) {
             View::success_message("Tree saved successfully");
+        }
+    }
+
+    void list_trees()
+    {
+        std::string sql = "SELECT * FROM trees";
+
+        tree_results->clear();
+
+        p_database->read(sql, callback);
+        if (tree_results->size() == 0) {
+            View::error_message("Trees not found");
+            return;
+        }
+
+        std::stringstream ss;
+
+        ss << "\n" << std::setw(80) << std::setfill('-') << "" << std::setfill(' ') << "\n";
+        ss << std::left << std::setw(5) << "Id" << std::setw(10) << "Tree" << "Description\n";
+        ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
+        View::output(ss.str());
+
+        for (const Model::Tree &tree: *tree_results) {
+            View::output(tree.to_string());
         }
     }
 

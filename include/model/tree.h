@@ -21,6 +21,8 @@ namespace Model
 
         bool operator==(const Tree &rhs) const;
 
+        std::string to_string() const;
+
     private:
         std::string m_name;
         std::string m_description;
