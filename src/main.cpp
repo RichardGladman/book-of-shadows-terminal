@@ -8,6 +8,7 @@
 #include "../include/controllers/planetcontroller.h"
 #include "../include/controllers/polaritycontroller.h"
 #include "../include/controllers/treecontroller.h"
+#include "../include/controllers/zodiaccontroller.h"
 #include "../include/database/database.h"
 
 std::string get_db_filename();
@@ -47,7 +48,7 @@ std::unique_ptr<Menu> make_main_menu()
     main_menu->add_option(Option {'L', "Manage Planets", handle_planet_menu});
     main_menu->add_option(Option {'P', "Manage Polarities", handle_polarity_menu});
     main_menu->add_option(Option {'E', "Manage Trees", handle_tree_menu});
-    main_menu->add_option(Option {'Z', "Manage Zodiacs", nullptr});
+    main_menu->add_option(Option {'Z', "Manage Zodiac", handle_zodiac_menu});
     main_menu->add_option(Option {'Q', "Quit", nullptr});
 
     return main_menu;
@@ -77,6 +78,8 @@ void create_tables()
     statements.push_back("CREATE TABLE IF NOT EXISTS herbs (id INTEGER PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));");
     statements.push_back("CREATE TABLE IF NOT EXISTS planets (id INTEGER PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));");
     statements.push_back("CREATE TABLE IF NOT EXISTS trees (id INTEGER PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));");
+    statements.push_back(std::string("CREATE TABLE IF NOT EXISTS zodiac (id INTEGER PRIMARY KEY, name VARCHAR(255), start_day INTEGER") +
+                         ", start_month INTEGER, end_day INTEGER, end_month INTEGER, description VARCHAR(255));");
 
     p_database->initialize(statements);
 }
