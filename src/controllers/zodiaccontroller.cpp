@@ -20,6 +20,7 @@ namespace
     void add_zodiac();
     void edit_zodiac();
     void list_zodiac();
+    void delete_zodiac();
 
     int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -46,7 +47,7 @@ namespace
         menu->add_option(Option {'A', "Add a Zodiac", add_zodiac});
         menu->add_option(Option {'E', "Edit a Zodiac", edit_zodiac});
         menu->add_option(Option {'L', "List Zodiac", list_zodiac});
-        menu->add_option(Option {'D', "Delete a Zodiac", nullptr});
+        menu->add_option(Option {'D', "Delete a Zodiac", delete_zodiac});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
         return menu;
@@ -138,6 +139,33 @@ namespace
 
         for (const Model::Zodiac &zodiac: *zodiac_results) {
             View::output(zodiac.to_string());
+        }
+
+    }
+
+    void delete_zodiac()
+    {
+        std::string to_delete = Input::get_text("Enter the zodiac's name");
+        if (to_delete.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM zodiac WHERE name LIKE '" + to_delete + "'";
+
+        zodiac_results->clear();
+
+        p_database->read(sql, callback);
+        if (zodiac_results->size() == 0) {
+            View::error_message("Zodiac " + to_delete + " not found");
+            return;
+        }
+
+        int id = zodiac_results->at(0).get_id();
+
+        if (p_database->del("zodiac", id)) {
+            View::success_message("Zodiac '" + to_delete + "' deleted");
+        } else {
+            View::error_message("Zodiac '" + to_delete + "' not deleted");
         }
 
     }
