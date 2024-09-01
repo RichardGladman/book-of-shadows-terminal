@@ -20,6 +20,7 @@ namespace
     void add_tree();
     void edit_tree();
     void list_trees();
+    void delete_tree();
 
     int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -47,7 +48,7 @@ namespace
         menu->add_option(Option {'A', "Add a Tree", add_tree});
         menu->add_option(Option {'E', "Edit a Tree", edit_tree});
         menu->add_option(Option {'L', "List Trees", list_trees});
-        menu->add_option(Option {'D', "Delete a Tree", nullptr});
+        menu->add_option(Option {'D', "Delete a Tree", delete_tree});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
         return menu;
@@ -122,6 +123,33 @@ namespace
         for (const Model::Tree &tree: *tree_results) {
             View::output(tree.to_string());
         }
+    }
+
+    void delete_tree()
+    {
+        std::string to_delete = Input::get_text("Enter the tree's name");
+        if (to_delete.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM trees WHERE name LIKE '" + to_delete + "'";
+
+        tree_results->clear();
+
+        p_database->read(sql, callback);
+        if (tree_results->size() == 0) {
+            View::error_message("Tree '" + to_delete + "' not found");
+            return;
+        }
+
+        int id = tree_results->at(0).get_id();
+
+        if (p_database->del("trees", id)) {
+            View::success_message("Tree '" + to_delete + "' deleted");
+        } else {
+            View::error_message("Tree '" + to_delete + "' not deleted");
+        }
+
     }
 
     int callback(void *data, int column_count, char **column_data, char **col_names)
