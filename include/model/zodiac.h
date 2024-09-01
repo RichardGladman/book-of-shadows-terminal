@@ -10,7 +10,7 @@ namespace Model
     class Zodiac : public BaseEntity
     {
     public:
-        Zodiac(const std::string &name, const std::string &description, int start_day, int start_month, int end_day, int end_month);
+        Zodiac(long id, const std::string &name, const std::string &description, int start_day, int start_month, int end_day, int end_month);
         Zodiac(const Zodiac &source);
 
         std::string get_name() const;

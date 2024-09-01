@@ -11,12 +11,16 @@
 #include "../../include/view/view.h"
 
 extern std::unique_ptr<Database> p_database;
+std::unique_ptr<std::vector<Model::Zodiac>> zodiac_results = std::make_unique<std::vector<Model::Zodiac>>();
 
 namespace
 {
     std::unique_ptr<Menu> make_zodiac_menu();
 
     void add_zodiac();
+    void edit_zodiac();
+
+    int callback(void *data, int column_count, char **column_data, char **col_names);
 }
 
 void handle_zodiac_menu()
@@ -39,7 +43,7 @@ namespace
     {
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage the Zodiac", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Zodiac", add_zodiac});
-        menu->add_option(Option {'E', "Edit a Zodiac", nullptr});
+        menu->add_option(Option {'E', "Edit a Zodiac", edit_zodiac});
         menu->add_option(Option {'L', "List Zodiac", nullptr});
         menu->add_option(Option {'D', "Delete a Zodiac", nullptr});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
@@ -68,5 +72,53 @@ namespace
         if (p_database->save(sql, data)) {
             View::success_message("Zodiac saved successfully");
         }
+    }
+
+    void edit_zodiac()
+    {
+        std::string to_edit = Input::get_text("Enter the zodiac's name");
+        if (to_edit.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM zodiac WHERE name LIKE '" + to_edit + "'";
+
+        p_database->read(sql, callback);
+        if (zodiac_results->size() == 0) {
+            View::error_message("Zodiac " + to_edit + " not found");
+            return;
+        }
+
+        Model::Zodiac zodiac = zodiac_results->at(0);
+
+        zodiac.set_name(Input::get_text("Enter zodiac's name (blank for current)", 0, zodiac.get_name()));
+        zodiac.set_description(Input::get_text("Enter zodiac's description (blank for current)", 0, zodiac.get_description()));
+        zodiac.set_start_day(Input::get_number("Enter the start day (blank for current)", zodiac.get_start_day()));
+        zodiac.set_start_month(Input::get_number("Enter the start month (blank for current)", zodiac.get_start_month()));
+        zodiac.set_end_day(Input::get_number("Enter the end day (blank for current)", zodiac.get_end_day()));
+        zodiac.set_end_month(Input::get_number("Enter the end month (blank for current)", zodiac.get_end_month()));
+
+        sql = "UPDATE zodiac SET name = ?, description = ?, start_day = ?, start_month = ?, end_day = ?, end_month = ? WHERE id = ?";
+
+        std::vector<SqlData> data {};
+        data.push_back(SqlData {"text", zodiac.get_name()});
+        data.push_back(SqlData {"text", zodiac.get_description()});
+        data.push_back(SqlData {"number", std::to_string(zodiac.get_start_day())});
+        data.push_back(SqlData {"number", std::to_string(zodiac.get_start_month())});
+        data.push_back(SqlData {"number", std::to_string(zodiac.get_end_day())});
+        data.push_back(SqlData {"number", std::to_string(zodiac.get_end_month())});
+        data.push_back(SqlData {"number", std::to_string(zodiac.get_id())});
+
+        if (p_database->save(sql, data)) {
+            View::success_message("Zodiac saved successfully");
+        }
+    }
+
+    int callback(void *data, int column_count, char **column_data, char **col_names)
+    {
+        zodiac_results->push_back(Model::Zodiac {std::atoi(column_data[0]), column_data[1], column_data[6], std::atoi(column_data[2]),
+                                                std::atoi(column_data[3]), std::atoi(column_data[4]), std::atoi(column_data[5])});
+
+        return 0;
     }
 }

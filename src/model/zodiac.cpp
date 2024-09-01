@@ -2,9 +2,9 @@
 
 namespace Model
 {
-    Zodiac::Zodiac(const std::string &name, const std::string &description, int start_day, int start_month, int end_day, int end_month) :
-    m_name {name}, m_description {description}, m_start_day {start_day}, m_start_month {start_month}, m_end_day {end_day}, m_end_month {end_month} {}
-    Zodiac::Zodiac(const Zodiac &source) : Zodiac {source.m_name, source.m_description, source.m_start_day, source.m_start_month, source.m_end_day, source.m_end_month} {}
+    Zodiac::Zodiac(long id, const std::string &name, const std::string &description, int start_day, int start_month, int end_day, int end_month) :
+    BaseEntity {id}, m_name {name}, m_description {description}, m_start_day {start_day}, m_start_month {start_month}, m_end_day {end_day}, m_end_month {end_month} {}
+    Zodiac::Zodiac(const Zodiac &source) : Zodiac {source.id, source.m_name, source.m_description, source.m_start_day, source.m_start_month, source.m_end_day, source.m_end_month} {}
 
     std::string Zodiac::get_name() const
     {
