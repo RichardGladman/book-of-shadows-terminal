@@ -44,7 +44,7 @@ namespace
 {
     std::unique_ptr<Menu> make_herb_menu()
     {
-        std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Polarities", "Enter your selection")};
+        std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Herbs", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Herb", add_herb});
         menu->add_option(Option {'E', "Edit a Herb", edit_herb});
         menu->add_option(Option {'L', "List Herbs", list_herbs});
