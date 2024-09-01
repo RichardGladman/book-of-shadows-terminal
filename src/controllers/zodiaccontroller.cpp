@@ -19,6 +19,7 @@ namespace
 
     void add_zodiac();
     void edit_zodiac();
+    void list_zodiac();
 
     int callback(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -44,7 +45,7 @@ namespace
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage the Zodiac", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Zodiac", add_zodiac});
         menu->add_option(Option {'E', "Edit a Zodiac", edit_zodiac});
-        menu->add_option(Option {'L', "List Zodiac", nullptr});
+        menu->add_option(Option {'L', "List Zodiac", list_zodiac});
         menu->add_option(Option {'D', "Delete a Zodiac", nullptr});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
@@ -112,6 +113,33 @@ namespace
         if (p_database->save(sql, data)) {
             View::success_message("Zodiac saved successfully");
         }
+    }
+
+    void list_zodiac()
+    {
+
+        std::string sql = "SELECT * FROM zodiac";
+
+        zodiac_results->clear();
+
+        p_database->read(sql, callback);
+        if (zodiac_results->size() == 0) {
+            View::error_message("Zodiac not found");
+            return;
+        }
+
+        std::stringstream ss;
+
+        ss << "\n" << std::setw(80) << std::setfill('-') << "" << std::setfill(' ') << "\n";
+        ss << std::left << std::setw(5) << "Id" << std::setw(10) << "Name" << std::setw(8) << "Start"
+           << std::setw(8) << "End" << "Description\n";
+        ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
+        View::output(ss.str());
+
+        for (const Model::Zodiac &zodiac: *zodiac_results) {
+            View::output(zodiac.to_string());
+        }
+
     }
 
     int callback(void *data, int column_count, char **column_data, char **col_names)

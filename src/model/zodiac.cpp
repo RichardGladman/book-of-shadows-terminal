@@ -1,5 +1,8 @@
 #include "model/zodiac.h"
 
+#include <iomanip>
+#include <sstream>
+
 namespace Model
 {
     Zodiac::Zodiac(long id, const std::string &name, const std::string &description, int start_day, int start_month, int end_day, int end_month) :
@@ -69,5 +72,16 @@ namespace Model
     bool Zodiac::operator==(const Zodiac &rhs) const
     {
         return this->id ==rhs.id && this->m_name == rhs.m_name;
+    }
+
+    std::string Zodiac::to_string() const
+    {
+        std::stringstream ss;
+        std::string start = std::to_string(this->m_start_day) + "/" + std::to_string(this->m_start_month);
+        std::string end = std::to_string(this->m_end_day) + "/" + std::to_string(this->m_end_month);
+
+        ss << std::left << std::setw(5) << this->id << std::setw(10) << this->m_name << std::setw(8) << start
+           << std::setw(8) << end << this->m_description;
+        return ss.str();
     }
 }

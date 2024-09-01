@@ -29,6 +29,8 @@ namespace Model
 
         bool operator==(const Zodiac &rhs) const;
 
+        std::string to_string() const;
+
     private:
         std::string m_name;
         int m_start_day;
