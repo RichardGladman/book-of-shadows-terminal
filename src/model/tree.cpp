@@ -2,9 +2,9 @@
 
 namespace Model
 {
-    Tree::Tree() : Tree {"", ""} {}
-    Tree::Tree(const std::string &name, const std::string &description) : m_name {name}, m_description {description} {}
-    Tree::Tree(const Tree &source) : Tree {source.m_name, source.m_description} {}
+    Tree::Tree() : Tree {0, "", ""} {}
+    Tree::Tree(long id, const std::string &name, const std::string &description) : BaseEntity {id}, m_name {name}, m_description {description} {}
+    Tree::Tree(const Tree &source) : Tree {source.id, source.m_name, source.m_description} {}
 
     std::string Tree::get_name() const
     {

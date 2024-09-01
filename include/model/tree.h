@@ -10,7 +10,7 @@ namespace Model
     {
     public:
         Tree();
-        Tree(const std::string &name, const std::string &description);
+        Tree(long id, const std::string &name, const std::string &description);
         Tree(const Tree &source);
 
         std::string get_name() const;
