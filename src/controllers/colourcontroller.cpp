@@ -86,8 +86,8 @@ namespace
 
     Model::Colour colour = query_results->at(0);
 
-    colour.set_name(Input::get_text("Enter colour's name (blank for current)", 0, colour.get_name()));
-    colour.set_meaning(Input::get_text("Enter colour's meaning (blank for current)", 0, colour.get_meaning()));
+    colour.set_name(Input::get_text("Enter colour's name (blank for current) [" + colour.get_name() + "]", 0, colour.get_name()));
+    colour.set_meaning(Input::get_text("Enter colour's meaning (blank for current) [" + colour.get_meaning() + "]", 0, colour.get_meaning()));
 
     sql = "UPDATE colours SET name = ?, meaning = ? WHERE id = ?";
     
