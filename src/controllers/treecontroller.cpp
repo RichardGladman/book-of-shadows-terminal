@@ -86,8 +86,8 @@ namespace
 
         Model::Tree tree = tree_results->at(0);
 
-        tree.set_name(Input::get_text("Enter tree's name (blank for current)", 0, tree.get_name()));
-        tree.set_description(Input::get_text("Enter tree's description (blank for current)", 0, tree.get_description()));
+        tree.set_name(Input::get_text("Enter tree's name (blank for current) [" + tree.get_name() + "]", 0, tree.get_name()));
+        tree.set_description(Input::get_text("Enter tree's description (blank for current) [" + tree.get_description() + "]", 0, tree.get_description()));
 
         sql = "UPDATE trees SET name = ?, description = ? WHERE id = ?";
 
