@@ -43,7 +43,7 @@ namespace
 {
     std::unique_ptr<Menu> make_planet_menu()
     {
-        std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Polarities", "Enter your selection")};
+        std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Planets", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Planet", add_planet});
         menu->add_option(Option {'E', "Edit a Planet", edit_planet});
         menu->add_option(Option {'L', "List Planet", list_planets});
@@ -86,8 +86,8 @@ namespace
 
         Model::Planet planet = planet_results->at(0);
 
-        planet.set_name(Input::get_text("Enter planet's name (blank for current)", 0, planet.get_name()));
-        planet.set_description(Input::get_text("Enter planet's description (blank for current)", 0, planet.get_description()));
+        planet.set_name(Input::get_text("Enter planet's name (blank for current) [" + planet.get_name() + "]", 0, planet.get_name()));
+        planet.set_description(Input::get_text("Enter planet's description (blank for current) [" + planet.get_description() + "]", 0, planet.get_description()));
 
         sql = "UPDATE planets SET name = ?, description = ? WHERE id = ?";
 
