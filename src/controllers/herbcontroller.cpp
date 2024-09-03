@@ -86,8 +86,8 @@ namespace
 
         Model::Herb herb = herb_results->at(0);
 
-        herb.set_name(Input::get_text("Enter herb's name (blank for current)", 0, herb.get_name()));
-        herb.set_description(Input::get_text("Enter herb's description (blank for current)", 0, herb.get_description()));
+        herb.set_name(Input::get_text("Enter herb's name (blank for current) [" + herb.get_name() + "]", 0, herb.get_name()));
+        herb.set_description(Input::get_text("Enter herb's description (blank for current) [" + herb.get_description() + "]", 0, herb.get_description()));
 
         sql = "UPDATE herbs SET name = ?, description = ? WHERE id = ?";
 
