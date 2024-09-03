@@ -48,7 +48,7 @@ namespace
 {
   std::unique_ptr<Menu> make_god_menu() 
   {
-    std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Colours", "Enter your selection")};
+    std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Gods", "Enter your selection")};
     menu->add_option(Option {'A', "Add a God", add_god});
     menu->add_option(Option {'E', "Edit a God", edit_god});
     menu->add_option(Option {'L', "List Gods", list_gods});
@@ -95,7 +95,7 @@ namespace
       return;
     }
 
-    std::string sql = "SELECT * FROM gods WHERE name LIKE '" + to_edit + "'";
+    std::string sql = "SELECT * FROM gods g LEFT JOIN polarities p ON g.polarity = p.id WHERE g.name LIKE '" + to_edit + "'";
     
     p_database->read(sql, callback);
     if (god_results->size() == 0) {
@@ -105,13 +105,13 @@ namespace
 
     Model::God god = god_results->at(0);
 
-    god.set_name(Input::get_text("Enter the god's name (blank for current)", 0, god.get_name()));
-    god.set_type(Input::get_text("Enter the god's type (blank for current)", 0, god.get_type()));
-    god.set_description(Input::get_text("Enter god's description (blank for current)", 0, god.get_description()));
+    god.set_name(Input::get_text("Enter the god's name (blank for current) [" + god.get_name() + "]", 0, god.get_name()));
+    god.set_type(Input::get_text("Enter the god's type (blank for current) [" + god.get_type() + "]", 0, god.get_type()));
+    god.set_description(Input::get_text("Enter god's description (blank for current) [" + god.get_description() + "]", 0, god.get_description()));
 
     god_polarity_results->clear();
 
-    std::string pol_name = Input::get_text("Enter the god's polarity", 0, god.get_polarity().get_name());
+    std::string pol_name = Input::get_text("Enter the god's polarity (blank for current) [" + god.get_polarity().get_name() + "]", 0, god.get_polarity().get_name());
     sql = "SELECT * FROM polarities WHERE name = '" + pol_name + "'";
     p_database->read(sql, create_polarity);
     if (god_polarity_results->size() > 0) {
