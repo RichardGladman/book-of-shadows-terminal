@@ -87,8 +87,8 @@ namespace
 
     Model::Polarity polarity = polarity_results->at(0);
 
-    polarity.set_name(Input::get_text("Enter polarity's name (blank for current)", 0, polarity.get_name()));
-    polarity.set_meaning(Input::get_text("Enter polarity's meaning (blank for current)", 0, polarity.get_meaning()));
+    polarity.set_name(Input::get_text("Enter polarity's name (blank for current) [" + polarity.get_name() + "]", 0, polarity.get_name()));
+    polarity.set_meaning(Input::get_text("Enter polarity's meaning (blank for current) [" + polarity.get_meaning() + "]", 0, polarity.get_meaning()));
 
     sql = "UPDATE polarities SET name = ?, meaning = ? WHERE id = ?";
 
