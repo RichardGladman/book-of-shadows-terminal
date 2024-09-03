@@ -93,12 +93,23 @@ namespace
 
         Model::Zodiac zodiac = zodiac_results->at(0);
 
-        zodiac.set_name(Input::get_text("Enter zodiac's name (blank for current)", 0, zodiac.get_name()));
-        zodiac.set_description(Input::get_text("Enter zodiac's description (blank for current)", 0, zodiac.get_description()));
-        zodiac.set_start_day(Input::get_number("Enter the start day (blank for current)", zodiac.get_start_day()));
-        zodiac.set_start_month(Input::get_number("Enter the start month (blank for current)", zodiac.get_start_month()));
-        zodiac.set_end_day(Input::get_number("Enter the end day (blank for current)", zodiac.get_end_day()));
-        zodiac.set_end_month(Input::get_number("Enter the end month (blank for current)", zodiac.get_end_month()));
+        std::string prompt = "Enter zodiac's name (blank for current) [" + zodiac.get_name() + "]";
+        zodiac.set_name(Input::get_text(prompt, 0, zodiac.get_name()));
+
+        prompt = "Enter zodiac's description (blank for current) [" + zodiac.get_description() + "]";
+        zodiac.set_description(Input::get_text(prompt, 0, zodiac.get_description()));
+
+        prompt = "Enter the start day (blank for current) [" + std::to_string(zodiac.get_start_day()) + "]";
+        zodiac.set_start_day(Input::get_number(prompt, zodiac.get_start_day()));
+
+        prompt = "Enter the start month (blank for current) [" + std::to_string(zodiac.get_start_month()) + "]";
+        zodiac.set_start_month(Input::get_number(prompt, zodiac.get_start_month()));
+
+        prompt = "Enter the end day (blank for current) [" + std::to_string(zodiac.get_end_day()) + "]";
+        zodiac.set_end_day(Input::get_number(prompt, zodiac.get_end_day()));
+
+        prompt = "Enter the end month (blank for current) [" + std::to_string(zodiac.get_end_month()) + "]";
+        zodiac.set_end_month(Input::get_number(prompt, zodiac.get_end_month()));
 
         sql = "UPDATE zodiac SET name = ?, description = ?, start_day = ?, start_month = ?, end_day = ?, end_month = ? WHERE id = ?";
 
