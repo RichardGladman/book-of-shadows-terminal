@@ -7,6 +7,7 @@
 #include "../include/controllers/herbcontroller.h"
 #include "../include/controllers/planetcontroller.h"
 #include "../include/controllers/polaritycontroller.h"
+#include "../include/controllers/runestonecontroller.h"
 #include "../include/controllers/treecontroller.h"
 #include "../include/controllers/zodiaccontroller.h"
 #include "../include/database/database.h"
@@ -40,7 +41,7 @@ int main()
 std::unique_ptr<Menu> make_main_menu()
 {
     std::unique_ptr<Menu> main_menu = std::make_unique<Menu>("Main Menu", "Enter your choice");
-    main_menu->add_option(Option {'R', "Manage Runestones", nullptr});
+    main_menu->add_option(Option {'R', "Manage Runestones", handle_runestone_menu});
     main_menu->add_option(Option {'T', "Manage Tarot Cards", nullptr});
     main_menu->add_option(Option {'C', "Manage Colours", handle_colour_menu});
     main_menu->add_option(Option {'G', "Manage Gods", handle_god_menu});
