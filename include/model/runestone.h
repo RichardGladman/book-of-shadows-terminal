@@ -19,7 +19,7 @@ namespace Model
     class Runestone : public BaseEntity
     {
     public:
-        Runestone(const std::string &name, const std::string &meaning);
+        Runestone(long id, const std::string &name, const std::string &meaning);
         Runestone(const Runestone &source);
 
         std::string name() const;
