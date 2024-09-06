@@ -19,6 +19,7 @@ namespace
 
     void add_runestone();
     void edit_runestone();
+    void list_runestones();
 
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -46,7 +47,7 @@ namespace
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Runestones", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Runestone", add_runestone});
         menu->add_option(Option {'E', "Edit a Runestone", edit_runestone});
-        menu->add_option(Option {'L', "List Runestones", nullptr});
+        menu->add_option(Option {'L', "List Runestones", list_runestones});
         menu->add_option(Option {'D', "Delete a Runestone", nullptr});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
@@ -99,6 +100,32 @@ namespace
         if (p_database->save(sql, data)) {
             View::success_message("Runestone saved successfully");
         }
+    }
+
+    void list_runestones()
+    {
+
+        std::string sql = "SELECT * FROM runestones";
+
+        runestone_results->clear();
+
+        p_database->read(sql, populate_runestones);
+        if (runestone_results->size() == 0) {
+            View::error_message("Runestones not found");
+            return;
+        }
+
+        std::stringstream ss;
+
+        ss << "\n" << std::setw(80) << std::setfill('-') << "" << std::setfill(' ') << "\n";
+        ss << std::left << std::setw(5) << "Id" << std::setw(10) << "Runestone" << "Meaning\n";
+        ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
+        View::output(ss.str());
+
+        for (const Model::Runestone &runestone: *runestone_results) {
+            View::output(runestone.to_string());
+        }
+
     }
 
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names)

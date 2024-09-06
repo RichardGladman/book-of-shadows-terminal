@@ -1,6 +1,9 @@
 #include "model/runestone.h"
 #include "model/tarotcard.h"
 
+#include <iomanip>
+#include <sstream>
+
 namespace Model
 {
     Runestone::Runestone(long id, const std::string &name, const std::string &meaning) :
@@ -112,5 +115,12 @@ namespace Model
     void Runestone::add_zodiac(const Zodiac &zodiac)
     {
         this->m_zodiacs.push_back(zodiac);
+    }
+
+    std::string Runestone::to_string() const
+    {
+        std::stringstream ss;
+        ss << std::left << std::setw(5) << this->id << std::setw(10) << this->m_name << this->m_meaning;
+        return ss.str();
     }
 }

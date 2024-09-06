@@ -46,6 +46,8 @@ namespace Model
         void add_tree(const Tree &tree);
         void add_zodiac(const Zodiac &zodiac);
 
+        std::string to_string() const;
+
     private:
         std::string m_name;
         std::string m_meaning;
