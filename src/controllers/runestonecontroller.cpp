@@ -20,6 +20,7 @@ namespace
     void add_runestone();
     void edit_runestone();
     void list_runestones();
+    void delete_runestone();
 
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names);
 }
@@ -48,7 +49,7 @@ namespace
         menu->add_option(Option {'A', "Add a Runestone", add_runestone});
         menu->add_option(Option {'E', "Edit a Runestone", edit_runestone});
         menu->add_option(Option {'L', "List Runestones", list_runestones});
-        menu->add_option(Option {'D', "Delete a Runestone", nullptr});
+        menu->add_option(Option {'D', "Delete a Runestone", delete_runestone});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
         return menu;
@@ -124,6 +125,33 @@ namespace
 
         for (const Model::Runestone &runestone: *runestone_results) {
             View::output(runestone.to_string());
+        }
+
+    }
+
+    void delete_runestone()
+    {
+        std::string to_delete = Input::get_text("Enter the runestone's name");
+        if (to_delete.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM runestones WHERE name LIKE '" + to_delete + "'";
+
+        runestone_results->clear();
+
+        p_database->read(sql, populate_runestones);
+        if (runestone_results->size() == 0) {
+            View::error_message("Runestone '" + to_delete + "' not found");
+            return;
+        }
+
+        int id = runestone_results->at(0).get_id();
+
+        if (p_database->del("runestones", id)) {
+            View::success_message("Runestones '" + to_delete + "' deleted");
+        } else {
+            View::error_message("Runestones '" + to_delete + "' not deleted");
         }
 
     }
