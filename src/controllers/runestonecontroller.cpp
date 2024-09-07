@@ -28,6 +28,7 @@ namespace
 
     void add_colour();
     void add_god();
+    void add_herb();
 
     int get_runestone_id(const std::string name);
 
@@ -70,6 +71,7 @@ namespace
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Add Relationships", "Enter your selection")};
         menu->add_option(Option {'C', "Add Colour", add_colour});
         menu->add_option(Option {'G', "Add God", add_god});
+        menu->add_option(Option {'H', "Add Herb", add_herb});
         menu->add_option(Option {'D', "Done", nullptr});
 
         return menu;
@@ -245,6 +247,38 @@ namespace
 
             if (p_database->save(sql, data)) {
                 View::success_message("Runestone / God saved successfully");
+            }
+        }
+    }
+
+    void add_herb()
+    {
+        std::string herb_name = Input::get_text("Enter the herb's name");
+        if (herb_name.size() == 0) {
+            return;
+        }
+
+        long runestone_id = get_runestone_id(name_of_runestone);
+
+        if (runestone_id != 0) {
+            std::string sql = "SELECT id FROM herbs WHERE name LIKE '" + herb_name + "'";
+
+            id_of_relation = 0;
+
+            p_database->read(sql, populate_relations);
+            if (id_of_relation == 0) {
+                View::error_message("Herb '" + herb_name + "' not found");
+                return;
+            }
+
+            sql = "INSERT INTO runestone_herb (runestone_id, herb_id) VALUES(?, ?)";
+
+            std::vector<SqlData> data {};
+            data.push_back(SqlData {"number", std::to_string(runestone_id)});
+            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
+
+            if (p_database->save(sql, data)) {
+                View::success_message("Runestone / Herb saved successfully");
             }
         }
     }
