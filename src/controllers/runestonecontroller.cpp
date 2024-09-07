@@ -31,6 +31,7 @@ namespace
     void add_herb();
     void add_planet();
     void add_polarity();
+    void add_tree();
 
     int get_runestone_id(const std::string name);
 
@@ -76,6 +77,7 @@ namespace
         menu->add_option(Option {'H', "Add Herb", add_herb});
         menu->add_option(Option {'L', "Add Planet", add_planet});
         menu->add_option(Option {'P', "Add Polarity", add_polarity});
+        menu->add_option(Option {'T', "Add Tree", add_tree});
         menu->add_option(Option {'D', "Done", nullptr});
 
         return menu;
@@ -347,6 +349,38 @@ namespace
 
             if (p_database->save(sql, data)) {
                 View::success_message("Runestone / Polarity saved successfully");
+            }
+        }
+    }
+
+    void add_tree()
+    {
+        std::string tree = Input::get_text("Enter the tree's name");
+        if (tree.size() == 0) {
+            return;
+        }
+
+        long runestone_id = get_runestone_id(name_of_runestone);
+
+        if (runestone_id != 0) {
+            std::string sql = "SELECT id FROM trees WHERE name LIKE '" + tree + "'";
+
+            id_of_relation = 0;
+
+            p_database->read(sql, populate_relations);
+            if (id_of_relation == 0) {
+                View::error_message("Tree '" + tree + "' not found");
+                return;
+            }
+
+            sql = "INSERT INTO runestone_tree (runestone_id, tree_id) VALUES(?, ?)";
+
+            std::vector<SqlData> data {};
+            data.push_back(SqlData {"number", std::to_string(runestone_id)});
+            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
+
+            if (p_database->save(sql, data)) {
+                View::success_message("Runestone / Tree saved successfully");
             }
         }
     }
