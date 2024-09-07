@@ -16,6 +16,7 @@ public:
     std::function<void()> get_action() const;
 
     void render() const;
+    void render(bool dummy) const;
 
 private:
     char m_choice;

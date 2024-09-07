@@ -16,6 +16,7 @@ std::unique_ptr<std::vector<Model::Runestone>> runestone_results = std::make_uni
 namespace
 {
     std::unique_ptr<Menu> make_runestone_menu();
+    std::unique_ptr<Menu> make_colour_menu();
 
     void add_runestone();
     void edit_runestone();
@@ -55,10 +56,18 @@ namespace
         return menu;
     }
 
+    std::unique_ptr<Menu> make_colour_menu()
+    {
+        std::unique_ptr<Menu> menu {std::make_unique<Menu>("Add Relationships", "Enter your selection")};
+        menu->add_option(Option {'C', "Add a Colour", nullptr});
+        menu->add_option(Option {'D', "Done", nullptr});
+
+        return menu;
+    }
 
     void add_runestone()
     {
-        std::string name = Input::get_text("Enter the runestone's name", 4);
+        std::string name = Input::get_text("Enter the runestone's name", 2);
         std::string meaning = Input::get_text("Enter the runestone's meaning");
 
         std::string sql = "INSERT INTO runestones(name, meaning) VALUES(?, ?)";
@@ -69,6 +78,17 @@ namespace
         if (p_database->save(sql, data)) {
             View::success_message("Runestone saved successfully");
         }
+    
+        std::unique_ptr<Menu> menu = make_colour_menu();
+        char selection {};
+
+        do {
+            menu->render(true);
+            selection = menu->get_selection();
+            if (selection != 'D') {
+                menu->invoke(selection);
+            }
+        } while (selection != 'D');
     }
 
     void edit_runestone()

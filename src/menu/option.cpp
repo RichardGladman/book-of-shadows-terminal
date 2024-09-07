@@ -20,3 +20,8 @@ void Option::render() const
 {
   std::cout << this->m_choice << ". " << this->m_text << "\n";
 }
+
+void Option::render(bool dummy) const
+{
+  std::cout << this->m_choice << ". " << this->m_text << ", ";
+}

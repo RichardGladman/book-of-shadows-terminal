@@ -20,6 +20,7 @@ public:
 
     void add_option(const Option &option);
     void render() const;
+    void render(bool dummy) const;
     char get_selection() const;
     void invoke(char selection) const;
 

@@ -31,7 +31,6 @@ void Menu::add_option(const Option &option)
 
 void Menu::render() const 
 {
-  //std::cout << ANSICodes::CLEAR_SCREEN;
   std::cout << "\n" << this->m_header << "\n\n";
 
   for (const Option &option: this->m_options) {
@@ -39,6 +38,17 @@ void Menu::render() const
   }
 
   std::cout << this->m_prompt << ": ";
+}
+
+void Menu::render(bool dummy) const
+{
+  std::cout << "\n" << this->m_header << "\n";
+
+  for (const Option &option: this->m_options) {
+    option.render(true);
+  }
+
+  std::cout << "\n" << this->m_prompt << ": ";
 }
 
 char Menu::get_selection() const
