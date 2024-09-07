@@ -16,7 +16,7 @@ std::unique_ptr<std::vector<Model::Runestone>> runestone_results = std::make_uni
 namespace
 {
     std::unique_ptr<Menu> make_runestone_menu();
-    std::unique_ptr<Menu> make_colour_menu();
+    std::unique_ptr<Menu> make_add_menu();
 
     void add_runestone();
     void edit_runestone();
@@ -56,7 +56,7 @@ namespace
         return menu;
     }
 
-    std::unique_ptr<Menu> make_colour_menu()
+    std::unique_ptr<Menu> make_add_menu()
     {
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Add Relationships", "Enter your selection")};
         menu->add_option(Option {'C', "Add a Colour", nullptr});
@@ -79,7 +79,7 @@ namespace
             View::success_message("Runestone saved successfully");
         }
     
-        std::unique_ptr<Menu> menu = make_colour_menu();
+        std::unique_ptr<Menu> menu = make_add_menu();
         char selection {};
 
         do {
