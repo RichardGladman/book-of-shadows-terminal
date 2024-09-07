@@ -85,6 +85,7 @@ void create_tables()
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_colour (runestone_id INTEGER, colour_id INTEGER, PRIMARY KEY(runestone_id, colour_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_god (runestone_id INTEGER, god_id INTEGER, PRIMARY KEY(runestone_id, god_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_herb (runestone_id INTEGER, herb_id INTEGER, PRIMARY KEY(runestone_id, herb_id));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS runestone_planet (runestone_id INTEGER, planet_id INTEGER, PRIMARY KEY(runestone_id, planet_id));");
 
     p_database->initialize(statements);
 }

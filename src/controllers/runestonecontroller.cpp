@@ -29,6 +29,7 @@ namespace
     void add_colour();
     void add_god();
     void add_herb();
+    void add_planet();
 
     int get_runestone_id(const std::string name);
 
@@ -72,6 +73,7 @@ namespace
         menu->add_option(Option {'C', "Add Colour", add_colour});
         menu->add_option(Option {'G', "Add God", add_god});
         menu->add_option(Option {'H', "Add Herb", add_herb});
+        menu->add_option(Option {'L', "Add planet", add_planet});
         menu->add_option(Option {'D', "Done", nullptr});
 
         return menu;
@@ -279,6 +281,38 @@ namespace
 
             if (p_database->save(sql, data)) {
                 View::success_message("Runestone / Herb saved successfully");
+            }
+        }
+    }
+
+    void add_planet()
+    {
+        std::string planet_name = Input::get_text("Enter the planets's name");
+        if (planet_name.size() == 0) {
+            return;
+        }
+
+        long runestone_id = get_runestone_id(name_of_runestone);
+
+        if (runestone_id != 0) {
+            std::string sql = "SELECT id FROM planets WHERE name LIKE '" + planet_name + "'";
+
+            id_of_relation = 0;
+
+            p_database->read(sql, populate_relations);
+            if (id_of_relation == 0) {
+                View::error_message("Planet '" + planet_name + "' not found");
+                return;
+            }
+
+            sql = "INSERT INTO runestone_planet (runestone_id, planet_id) VALUES(?, ?)";
+
+            std::vector<SqlData> data {};
+            data.push_back(SqlData {"number", std::to_string(runestone_id)});
+            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
+
+            if (p_database->save(sql, data)) {
+                View::success_message("Runestone / Planet saved successfully");
             }
         }
     }
