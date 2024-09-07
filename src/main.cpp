@@ -82,6 +82,7 @@ void create_tables()
     statements.push_back(std::string("CREATE TABLE IF NOT EXISTS zodiac (id INTEGER PRIMARY KEY, name VARCHAR(255), start_day INTEGER") +
                          ", start_month INTEGER, end_day INTEGER, end_month INTEGER, description VARCHAR(255));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestones (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS runestone_colour (runestone_id INTEGER, colour_id INTEGER, PRIMARY KEY(runestone_id, colour_id));");
 
     p_database->initialize(statements);
 }

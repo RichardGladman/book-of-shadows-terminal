@@ -15,6 +15,9 @@ std::unique_ptr<std::vector<Model::Runestone>> runestone_results = std::make_uni
 
 namespace
 {
+    std::string name_of_runestone {};
+    int id_of_relation {};
+
     std::unique_ptr<Menu> make_runestone_menu();
     std::unique_ptr<Menu> make_add_menu();
 
@@ -23,7 +26,10 @@ namespace
     void list_runestones();
     void delete_runestone();
 
+    void add_colour();
+
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names);
+    int populate_relations(void *data, int column_count, char **column_data, char **col_names);
 }
 
 
@@ -59,7 +65,7 @@ namespace
     std::unique_ptr<Menu> make_add_menu()
     {
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Add Relationships", "Enter your selection")};
-        menu->add_option(Option {'C', "Add a Colour", nullptr});
+        menu->add_option(Option {'C', "Add a Colour", add_colour});
         menu->add_option(Option {'D', "Done", nullptr});
 
         return menu;
@@ -78,6 +84,8 @@ namespace
         if (p_database->save(sql, data)) {
             View::success_message("Runestone saved successfully");
         }
+
+        name_of_runestone = name;
     
         std::unique_ptr<Menu> menu = make_add_menu();
         char selection {};
@@ -173,13 +181,53 @@ namespace
         } else {
             View::error_message("Runestones '" + to_delete + "' not deleted");
         }
+    }
 
+    void add_colour()
+    {
+        std::string colour_name = Input::get_text("Enter the colour");
+        if (colour_name.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM runestones WHERE name LIKE '" + name_of_runestone + "'";
+
+        p_database->read(sql, populate_runestones);
+        if (runestone_results->size() == 0) {
+            View::error_message("Runestone '" + name_of_runestone + "' not found");
+            return;
+        }
+
+        long runestone_id = runestone_results->at(0).get_id();
+        sql = "SELECT id FROM colours WHERE name LIKE '" + colour_name + "'";
+
+        p_database->read(sql, populate_relations);
+        if (id_of_relation == 0) {
+            View::error_message("Colour '" + colour_name + "' not found");
+            return;
+        }
+
+        sql = "INSERT INTO runestone_colour (runestone_id, colour_id) VALUES(?, ?)";
+
+        std::vector<SqlData> data {};
+        data.push_back(SqlData {"number", std::to_string(runestone_id)});
+        data.push_back(SqlData {"number", std::to_string(id_of_relation)});
+
+        if (p_database->save(sql, data)) {
+            View::success_message("Runestone / Colour saved successfully");
+        }
     }
 
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names)
     {
         runestone_results->push_back(Model::Runestone {std::atoi(column_data[0]), column_data[1], column_data[2]});
 
+        return 0;
+    }
+
+    int populate_relations(void *data, int column_count, char **column_data, char **col_names)
+    {
+        id_of_relation = std::atoi(column_data[0]);
         return 0;
     }
 }
