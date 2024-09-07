@@ -1,3 +1,4 @@
+#include <cctype>
 #include <iomanip>
 #include <memory>
 #include <sstream>
@@ -34,6 +35,9 @@ namespace
     void add_tree();
     void add_zodiac();
 
+    void add_relation(const std::string &relation, const std::string &title);
+
+    std::string get_table_name(const std::string &relation);
     int get_runestone_id(const std::string name);
 
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names);
@@ -199,224 +203,85 @@ namespace
 
     void add_colour()
     {
-        std::string colour_name = Input::get_text("Enter the colour");
-        if (colour_name.size() == 0) {
-            return;
-        }
-
-        long runestone_id = get_runestone_id(name_of_runestone);
-
-        if (runestone_id != 0) {
-            std::string sql = "SELECT id FROM colours WHERE name LIKE '" + colour_name + "'";
-
-            p_database->read(sql, populate_relations);
-            if (id_of_relation == 0) {
-                View::error_message("Colour '" + colour_name + "' not found");
-                return;
-            }
-
-            sql = "INSERT INTO runestone_colour (runestone_id, colour_id) VALUES(?, ?)";
-
-            std::vector<SqlData> data {};
-            data.push_back(SqlData {"number", std::to_string(runestone_id)});
-            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-            if (p_database->save(sql, data)) {
-                View::success_message("Runestone / Colour saved successfully");
-            }
-        }
+        add_relation("colour", "Colour");
     }
 
     void add_god()
     {
-        std::string god_name = Input::get_text("Enter the god's name");
-        if (god_name.size() == 0) {
-            return;
-        }
-
-        long runestone_id = get_runestone_id(name_of_runestone);
-
-        if (runestone_id != 0) {
-            std::string sql = "SELECT id FROM gods WHERE name LIKE '" + god_name + "'";
-
-            id_of_relation = 0;
-
-            p_database->read(sql, populate_relations);
-            if (id_of_relation == 0) {
-                View::error_message("God '" + god_name + "' not found");
-                return;
-            }
-
-            sql = "INSERT INTO runestone_god (runestone_id, god_id) VALUES(?, ?)";
-
-            std::vector<SqlData> data {};
-            data.push_back(SqlData {"number", std::to_string(runestone_id)});
-            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-            if (p_database->save(sql, data)) {
-                View::success_message("Runestone / God saved successfully");
-            }
-        }
+        add_relation("god", "God");
     }
 
     void add_herb()
     {
-        std::string herb_name = Input::get_text("Enter the herb's name");
-        if (herb_name.size() == 0) {
-            return;
-        }
-
-        long runestone_id = get_runestone_id(name_of_runestone);
-
-        if (runestone_id != 0) {
-            std::string sql = "SELECT id FROM herbs WHERE name LIKE '" + herb_name + "'";
-
-            id_of_relation = 0;
-
-            p_database->read(sql, populate_relations);
-            if (id_of_relation == 0) {
-                View::error_message("Herb '" + herb_name + "' not found");
-                return;
-            }
-
-            sql = "INSERT INTO runestone_herb (runestone_id, herb_id) VALUES(?, ?)";
-
-            std::vector<SqlData> data {};
-            data.push_back(SqlData {"number", std::to_string(runestone_id)});
-            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-            if (p_database->save(sql, data)) {
-                View::success_message("Runestone / Herb saved successfully");
-            }
-        }
+        add_relation("herb", "Herbs");
     }
 
     void add_planet()
     {
-        std::string planet_name = Input::get_text("Enter the planets's name");
-        if (planet_name.size() == 0) {
-            return;
-        }
-
-        long runestone_id = get_runestone_id(name_of_runestone);
-
-        if (runestone_id != 0) {
-            std::string sql = "SELECT id FROM planets WHERE name LIKE '" + planet_name + "'";
-
-            id_of_relation = 0;
-
-            p_database->read(sql, populate_relations);
-            if (id_of_relation == 0) {
-                View::error_message("Planet '" + planet_name + "' not found");
-                return;
-            }
-
-            sql = "INSERT INTO runestone_planet (runestone_id, planet_id) VALUES(?, ?)";
-
-            std::vector<SqlData> data {};
-            data.push_back(SqlData {"number", std::to_string(runestone_id)});
-            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-            if (p_database->save(sql, data)) {
-                View::success_message("Runestone / Planet saved successfully");
-            }
-        }
+        add_relation("planet", "Planet");
     }
 
     void add_polarity()
     {
-        std::string polarity = Input::get_text("Enter the polarity");
-        if (polarity.size() == 0) {
-            return;
-        }
-
-        long runestone_id = get_runestone_id(name_of_runestone);
-
-        if (runestone_id != 0) {
-            std::string sql = "SELECT id FROM polarities WHERE name LIKE '" + polarity + "'";
-
-            id_of_relation = 0;
-
-            p_database->read(sql, populate_relations);
-            if (id_of_relation == 0) {
-                View::error_message("Polarity '" + polarity + "' not found");
-                return;
-            }
-
-            sql = "INSERT INTO runestone_polarity (runestone_id, polarity_id) VALUES(?, ?)";
-
-            std::vector<SqlData> data {};
-            data.push_back(SqlData {"number", std::to_string(runestone_id)});
-            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-            if (p_database->save(sql, data)) {
-                View::success_message("Runestone / Polarity saved successfully");
-            }
-        }
+        add_relation("polarity", "Polarity");
     }
 
     void add_tree()
     {
-        std::string tree = Input::get_text("Enter the tree's name");
-        if (tree.size() == 0) {
-            return;
-        }
-
-        long runestone_id = get_runestone_id(name_of_runestone);
-
-        if (runestone_id != 0) {
-            std::string sql = "SELECT id FROM trees WHERE name LIKE '" + tree + "'";
-
-            id_of_relation = 0;
-
-            p_database->read(sql, populate_relations);
-            if (id_of_relation == 0) {
-                View::error_message("Tree '" + tree + "' not found");
-                return;
-            }
-
-            sql = "INSERT INTO runestone_tree (runestone_id, tree_id) VALUES(?, ?)";
-
-            std::vector<SqlData> data {};
-            data.push_back(SqlData {"number", std::to_string(runestone_id)});
-            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-            if (p_database->save(sql, data)) {
-                View::success_message("Runestone / Tree saved successfully");
-            }
-        }
+        add_relation("tree", "Tree");
     }
 
     void add_zodiac()
     {
-        std::string zodiac = Input::get_text("Enter the zodiac");
-        if (zodiac.size() == 0) {
+        add_relation("zodiac", "Zodiac");
+    }
+
+    void add_relation(const std::string &relation, const std::string &title)
+    {
+        std::string name = Input::get_text("Enter the " + relation);
+        if (name.size() == 0) {
             return;
         }
 
         long runestone_id = get_runestone_id(name_of_runestone);
 
         if (runestone_id != 0) {
-            std::string sql = "SELECT id FROM zodiac WHERE name LIKE '" + zodiac + "'";
+            std::string table = get_table_name(relation);
+            std::string sql = "SELECT id FROM " + table + " WHERE name LIKE '" + name + "'";
 
             id_of_relation = 0;
 
             p_database->read(sql, populate_relations);
             if (id_of_relation == 0) {
-                View::error_message("Zodiac '" + zodiac + "' not found");
+                View::error_message(title + " '" + name + "' not found");
                 return;
             }
 
-            sql = "INSERT INTO runestone_zodiac (runestone_id, zodiac_id) VALUES(?, ?)";
+            sql = "INSERT INTO runestone_" + relation + " (runestone_id, " + relation + "_id) VALUES(?, ?)";
 
             std::vector<SqlData> data {};
             data.push_back(SqlData {"number", std::to_string(runestone_id)});
             data.push_back(SqlData {"number", std::to_string(id_of_relation)});
 
             if (p_database->save(sql, data)) {
-                View::success_message("Runestone / Zodiac saved successfully");
+                View::success_message("Runestone / " + title + " saved successfully");
             }
         }
+    }
+
+    std::string get_table_name(const std::string &relation)
+    {
+        std::string table {};
+
+        if (relation == "polarity") {
+            table = "polarities";
+        } else if (relation == "zodiac") {
+            table = "zodiac";
+        } else {
+            table = relation + "s";
+        }
+
+        return table;
     }
 
     int get_runestone_id(const std::string name)
@@ -442,6 +307,7 @@ namespace
     int populate_relations(void *data, int column_count, char **column_data, char **col_names)
     {
         id_of_relation = std::atoi(column_data[0]);
+        View::success_message(column_data[0]);
         return 0;
     }
 }
