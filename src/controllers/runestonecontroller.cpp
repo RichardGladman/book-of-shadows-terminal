@@ -27,6 +27,9 @@ namespace
     void delete_runestone();
 
     void add_colour();
+    void add_god();
+
+    int get_runestone_id(const std::string name);
 
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names);
     int populate_relations(void *data, int column_count, char **column_data, char **col_names);
@@ -65,7 +68,8 @@ namespace
     std::unique_ptr<Menu> make_add_menu()
     {
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Add Relationships", "Enter your selection")};
-        menu->add_option(Option {'C', "Add a Colour", add_colour});
+        menu->add_option(Option {'C', "Add Colour", add_colour});
+        menu->add_option(Option {'G', "Add God", add_god});
         menu->add_option(Option {'D', "Done", nullptr});
 
         return menu;
@@ -190,32 +194,72 @@ namespace
             return;
         }
 
-        std::string sql = "SELECT * FROM runestones WHERE name LIKE '" + name_of_runestone + "'";
+        long runestone_id = get_runestone_id(name_of_runestone);
+
+        if (runestone_id != 0) {
+            std::string sql = "SELECT id FROM colours WHERE name LIKE '" + colour_name + "'";
+
+            p_database->read(sql, populate_relations);
+            if (id_of_relation == 0) {
+                View::error_message("Colour '" + colour_name + "' not found");
+                return;
+            }
+
+            sql = "INSERT INTO runestone_colour (runestone_id, colour_id) VALUES(?, ?)";
+
+            std::vector<SqlData> data {};
+            data.push_back(SqlData {"number", std::to_string(runestone_id)});
+            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
+
+            if (p_database->save(sql, data)) {
+                View::success_message("Runestone / Colour saved successfully");
+            }
+        }
+    }
+
+    void add_god()
+    {
+        std::string god_name = Input::get_text("Enter the god's name");
+        if (god_name.size() == 0) {
+            return;
+        }
+
+        long runestone_id = get_runestone_id(name_of_runestone);
+
+        if (runestone_id != 0) {
+            std::string sql = "SELECT id FROM gods WHERE name LIKE '" + god_name + "'";
+
+            id_of_relation = 0;
+
+            p_database->read(sql, populate_relations);
+            if (id_of_relation == 0) {
+                View::error_message("God '" + god_name + "' not found");
+                return;
+            }
+
+            sql = "INSERT INTO runestone_god (runestone_id, god_id) VALUES(?, ?)";
+
+            std::vector<SqlData> data {};
+            data.push_back(SqlData {"number", std::to_string(runestone_id)});
+            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
+
+            if (p_database->save(sql, data)) {
+                View::success_message("Runestone / God saved successfully");
+            }
+        }
+    }
+
+    int get_runestone_id(const std::string name)
+    {
+        std::string sql = "SELECT * FROM runestones WHERE name LIKE '" + name + "'";
 
         p_database->read(sql, populate_runestones);
         if (runestone_results->size() == 0) {
-            View::error_message("Runestone '" + name_of_runestone + "' not found");
-            return;
+            View::error_message("Runestone '" + name + "' not found");
+            return 0;
         }
 
-        long runestone_id = runestone_results->at(0).get_id();
-        sql = "SELECT id FROM colours WHERE name LIKE '" + colour_name + "'";
-
-        p_database->read(sql, populate_relations);
-        if (id_of_relation == 0) {
-            View::error_message("Colour '" + colour_name + "' not found");
-            return;
-        }
-
-        sql = "INSERT INTO runestone_colour (runestone_id, colour_id) VALUES(?, ?)";
-
-        std::vector<SqlData> data {};
-        data.push_back(SqlData {"number", std::to_string(runestone_id)});
-        data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-        if (p_database->save(sql, data)) {
-            View::success_message("Runestone / Colour saved successfully");
-        }
+        return runestone_results->at(0).get_id();
     }
 
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names)
