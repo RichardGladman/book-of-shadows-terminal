@@ -21,6 +21,7 @@ namespace
 
     std::unique_ptr<Menu> make_runestone_menu();
     std::unique_ptr<Menu> make_add_menu();
+    std::unique_ptr<Menu> make_edit_menu();
 
     void add_runestone();
     void edit_runestone();
@@ -34,8 +35,16 @@ namespace
     void add_polarity();
     void add_tree();
     void add_zodiac();
+    void remove_colour();
+    void remove_god();
+    void remove_herb();
+    void remove_planet();
+    void remove_polarity();
+    void remove_tree();
+    void remove_zodiac();
 
     void add_relation(const std::string &relation, const std::string &title);
+    void remove_relation(const std::string &relation, const std::string &title);
 
     std::string get_table_name(const std::string &relation);
     int get_runestone_id(const std::string name);
@@ -76,7 +85,7 @@ namespace
 
     std::unique_ptr<Menu> make_add_menu()
     {
-        std::unique_ptr<Menu> menu {std::make_unique<Menu>("Add Relationships", "Enter your selection")};
+        std::unique_ptr<Menu> menu {std::make_unique<Menu>("Relationships", "Enter your selection")};
         menu->add_option(Option {'C', "Add Colour", add_colour});
         menu->add_option(Option {'G', "Add God", add_god});
         menu->add_option(Option {'H', "Add Herb", add_herb});
@@ -84,6 +93,28 @@ namespace
         menu->add_option(Option {'P', "Add Polarity", add_polarity});
         menu->add_option(Option {'T', "Add Tree", add_tree});
         menu->add_option(Option {'Z', "Add Zodiac", add_zodiac});
+        menu->add_option(Option {'D', "Done", nullptr});
+
+        return menu;
+    }
+
+    std::unique_ptr<Menu> make_edit_menu()
+    {
+        std::unique_ptr<Menu> menu {std::make_unique<Menu>("Relationships", "Enter your selection")};
+        menu->add_option(Option {'C', "Add Colour", add_colour});
+        menu->add_option(Option {'M', "Remove Colour", remove_colour});
+        menu->add_option(Option {'G', "Add God", add_god});
+        menu->add_option(Option {'N', "Remove God", remove_god});
+        menu->add_option(Option {'H', "Add Herb", add_herb});
+        menu->add_option(Option {'O', "Remove Herb", remove_herb});
+        menu->add_option(Option {'L', "Add Planet", add_planet});
+        menu->add_option(Option {'P', "Remove Planet", remove_planet});
+        menu->add_option(Option {'P', "Add Polarity", add_polarity});
+        menu->add_option(Option {'Q', "Remove Polarity", remove_polarity});
+        menu->add_option(Option {'T', "Add Tree", add_tree});
+        menu->add_option(Option {'R', "Remove Tree", remove_tree});
+        menu->add_option(Option {'Z', "Add Zodiac", add_zodiac});
+        menu->add_option(Option {'S', "Remove Zodiac", remove_zodiac});
         menu->add_option(Option {'D', "Done", nullptr});
 
         return menu;
@@ -146,6 +177,17 @@ namespace
 
         if (p_database->save(sql, data)) {
             View::success_message("Runestone saved successfully");
+   
+            std::unique_ptr<Menu> menu = make_edit_menu();
+            char selection {};
+
+            do {
+                menu->render(true);
+                selection = menu->get_selection();
+                if (selection != 'D') {
+                    menu->invoke(selection);
+                }
+            } while (selection != 'D');
         }
     }
 
@@ -213,7 +255,7 @@ namespace
 
     void add_herb()
     {
-        add_relation("herb", "Herbs");
+        add_relation("herb", "Herb");
     }
 
     void add_planet()
@@ -234,6 +276,41 @@ namespace
     void add_zodiac()
     {
         add_relation("zodiac", "Zodiac");
+    }
+
+    void remove_colour()
+    {
+        remove_relation("colour", "Colour");
+    }
+
+    void remove_god()
+    {
+        remove_relation("god", "God");
+    }
+
+    void remove_herb()
+    {
+        remove_relation("herb", "Herb");
+    }
+
+    void remove_planet()
+    {
+        remove_relation("planet", "Planet");
+    }
+
+    void remove_polarity()
+    {
+        remove_relation("polarity", "Polarity");
+    }
+
+    void remove_tree()
+    {
+        remove_relation("tree", "Tree");
+    }
+
+    void remove_zodiac()
+    {
+        remove_relation("zodiac", "Zodiac");
     }
 
     void add_relation(const std::string &relation, const std::string &title)
@@ -265,6 +342,39 @@ namespace
 
             if (p_database->save(sql, data)) {
                 View::success_message("Runestone / " + title + " saved successfully");
+            }
+        }
+    }
+
+    void remove_relation(const std::string &relation, const std::string &title)
+    {
+        std::string name = Input::get_text("Enter the " + relation);
+        if (name.size() == 0) {
+            return;
+        }
+
+        long runestone_id = get_runestone_id(name_of_runestone);
+
+        if (runestone_id != 0) {
+            std::string table = get_table_name(relation);
+            std::string sql = "SELECT id FROM " + table + " WHERE name LIKE '" + name + "'";
+
+            id_of_relation = 0;
+
+            p_database->read(sql, populate_relations);
+            if (id_of_relation == 0) {
+                View::error_message(title + " '" + name + "' not found");
+                return;
+            }
+
+            sql = "DELETE FROM runestone_" + relation + " WHERE runestone_id = ? AND " + relation + "_id = ?";
+
+            std::vector<SqlData> data {};
+            data.push_back(SqlData {"number", std::to_string(runestone_id)});
+            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
+
+            if (p_database->save(sql, data)) {
+                View::success_message("Runestone / " + title + " removed successfully");
             }
         }
     }
@@ -307,7 +417,6 @@ namespace
     int populate_relations(void *data, int column_count, char **column_data, char **col_names)
     {
         id_of_relation = std::atoi(column_data[0]);
-        View::success_message(column_data[0]);
         return 0;
     }
 }
