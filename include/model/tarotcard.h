@@ -20,7 +20,7 @@ namespace Model
     class TarotCard : public BaseEntity
     {
     public:
-        TarotCard(const std::string &name, const std::string &meaning);
+        TarotCard(long id, const std::string &name, const std::string &meaning);
         TarotCard(const TarotCard &source);
 
         std::string name() const;
