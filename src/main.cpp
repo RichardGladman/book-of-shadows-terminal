@@ -8,6 +8,7 @@
 #include "../include/controllers/planetcontroller.h"
 #include "../include/controllers/polaritycontroller.h"
 #include "../include/controllers/runestonecontroller.h"
+#include "../include/controllers/tarotcontroller.h"
 #include "../include/controllers/treecontroller.h"
 #include "../include/controllers/zodiaccontroller.h"
 #include "../include/database/database.h"
@@ -42,7 +43,7 @@ std::unique_ptr<Menu> make_main_menu()
 {
     std::unique_ptr<Menu> main_menu = std::make_unique<Menu>("Main Menu", "Enter your choice");
     main_menu->add_option(Option {'R', "Manage Runestones", handle_runestone_menu});
-    main_menu->add_option(Option {'T', "Manage Tarot Cards", nullptr});
+    main_menu->add_option(Option {'T', "Manage Tarot Cards", handle_tarot_menu});
     main_menu->add_option(Option {'C', "Manage Colours", handle_colour_menu});
     main_menu->add_option(Option {'G', "Manage Gods", handle_god_menu});
     main_menu->add_option(Option {'H', "Manage Herbs", handle_herb_menu});
@@ -89,6 +90,7 @@ void create_tables()
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_polarity (runestone_id INTEGER, polarity_id INTEGER, PRIMARY KEY(runestone_id, polarity_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_tree (runestone_id INTEGER, tree_id INTEGER, PRIMARY KEY(runestone_id, tree_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_zodiac (runestone_id INTEGER, zodiac_id INTEGER, PRIMARY KEY(runestone_id, zodiac_id));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS tarotcards (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
 
     p_database->initialize(statements);
 }

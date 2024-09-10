@@ -25,7 +25,8 @@ add_executable(bookofshadows main.cpp
     ../include/controllers/planetcontroller.h controllers/planetcontroller.cpp
     ../include/controllers/treecontroller.h controllers/treecontroller.cpp
     ../include/controllers/zodiaccontroller.h controllers/zodiaccontroller.cpp
-    ../include/controllers/runestonecontroller.h controllers/runestonecontroller.cpp)
+    ../include/controllers/runestonecontroller.h controllers/runestonecontroller.cpp
+    ../include/controllers/tarotcontroller.h controllers/tarotcontroller.cpp)
 
 target_include_directories(bookofshadows PUBLIC 
           $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>

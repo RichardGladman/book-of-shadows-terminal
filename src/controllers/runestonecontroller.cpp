@@ -1,4 +1,3 @@
-#include <cctype>
 #include <iomanip>
 #include <memory>
 #include <sstream>
