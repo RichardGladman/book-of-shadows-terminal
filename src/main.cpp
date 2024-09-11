@@ -96,7 +96,7 @@ void create_tables()
     statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_herb (tarot_card_id INTEGER, herb_id INTEGER, PRIMARY KEY(tarot_card_id, herb_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_planet (tarot_card_id INTEGER, planet_id INTEGER, PRIMARY KEY(tarot_card_id, planet_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_polarity (tarot_card_id INTEGER, polarity_id INTEGER, PRIMARY KEY(tarot_card_id, polarity_id));");
-    statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_runestone (tarot_card_id INTEGER, polarity_id INTEGER, PRIMARY KEY(tarot_card_id, runestone_id));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_runestone (tarot_card_id INTEGER, runestone_id INTEGER, PRIMARY KEY(tarot_card_id, runestone_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_tree (tarot_card_id INTEGER, tree_id INTEGER, PRIMARY KEY(tarot_card_id, tree_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_zodiac (tarot_card_id INTEGER, zodiac_id INTEGER, PRIMARY KEY(tarot_card_id, zodiac_id));");
 
