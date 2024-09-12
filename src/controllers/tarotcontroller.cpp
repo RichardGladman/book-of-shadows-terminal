@@ -45,6 +45,7 @@ namespace
     void add_tarot_card();
     void edit_tarot_card();
     void list_tarot_cards();
+    void delete_tarot_card();
 
     std::string get_table_name(const std::string &relation);
     int get_tarot_id(const std::string name);
@@ -76,7 +77,7 @@ namespace
         menu->add_option(Option {'A', "Add a Tarot Card", add_tarot_card});
         menu->add_option(Option {'E', "Edit a Tarot Card", edit_tarot_card});
         menu->add_option(Option {'L', "List Tarot Cards", list_tarot_cards});
-        menu->add_option(Option {'D', "Delete a Tarot Card", nullptr});
+        menu->add_option(Option {'D', "Delete a Tarot Card", delete_tarot_card});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
         return menu;
@@ -217,6 +218,32 @@ namespace
             View::output(tarot_card.to_string());
         }
 
+    }
+
+    void delete_tarot_card()
+    {
+        std::string to_delete = Input::get_text("Enter the tarot card's name");
+        if (to_delete.size() == 0) {
+            return;
+        }
+
+        std::string sql = "SELECT * FROM tarotcards WHERE name LIKE '" + to_delete + "'";
+
+        tarot_card_results->clear();
+
+        p_database->read(sql, populate_tarot_card);
+        if (tarot_card_results->size() == 0) {
+            View::error_message("Tarot card '" + to_delete + "' not found");
+            return;
+        }
+
+        int id = tarot_card_results->at(0).get_id();
+
+        if (p_database->del("tarotcards", id)) {
+            View::success_message("Tarot card '" + to_delete + "' deleted");
+        } else {
+            View::error_message("Tarot card '" + to_delete + "' not deleted");
+        }
     }
 
     void add_colour()
