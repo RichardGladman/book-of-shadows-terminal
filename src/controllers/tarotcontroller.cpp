@@ -44,6 +44,7 @@ namespace
 
     void add_tarot_card();
     void edit_tarot_card();
+    void list_tarot_cards();
 
     std::string get_table_name(const std::string &relation);
     int get_tarot_id(const std::string name);
@@ -74,7 +75,7 @@ namespace
         std::unique_ptr<Menu> menu {std::make_unique<Menu>("Manage Tarot Cards", "Enter your selection")};
         menu->add_option(Option {'A', "Add a Tarot Card", add_tarot_card});
         menu->add_option(Option {'E', "Edit a Tarot Card", edit_tarot_card});
-        menu->add_option(Option {'L', "List Tarot Cards", nullptr});
+        menu->add_option(Option {'L', "List Tarot Cards", list_tarot_cards});
         menu->add_option(Option {'D', "Delete a Tarot Card", nullptr});
         menu->add_option(Option {'B', "Back to Main Menu", nullptr});
 
@@ -190,6 +191,32 @@ namespace
                 }
             } while (selection != 'D');
         }
+    }
+
+    void list_tarot_cards()
+    {
+
+        std::string sql = "SELECT * FROM tarotcards";
+
+        tarot_card_results->clear();
+
+        p_database->read(sql, populate_tarot_card);
+        if (tarot_card_results->size() == 0) {
+            View::error_message("Tarot card not found");
+            return;
+        }
+
+        std::stringstream ss;
+
+        ss << "\n" << std::setw(80) << std::setfill('-') << "" << std::setfill(' ') << "\n";
+        ss << std::left << std::setw(5) << "Id" << std::setw(15) << "Tarot Card" << "Meaning\n";
+        ss << std::setw(80) << std::setfill('-') << "" << std::setfill(' ');
+        View::output(ss.str());
+
+        for (const Model::TarotCard &tarot_card: *tarot_card_results) {
+            View::output(tarot_card.to_string());
+        }
+
     }
 
     void add_colour()
