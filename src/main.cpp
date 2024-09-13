@@ -73,16 +73,16 @@ std::string get_db_filename()
 void create_tables()
 {
     std::vector<std::string> statements {};
-    statements.push_back("CREATE TABLE IF NOT EXISTS colours (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS colours (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning TEXT);");
     statements.push_back(std::string("CREATE TABLE IF NOT EXISTS gods (id INTEGER PRIMARY KEY, name VARCHAR(255), type VARCHAR(255)") +
-                            ", polarity INTEGER, description VARCHAR(255));");
-    statements.push_back("CREATE TABLE IF NOT EXISTS polarities (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
-    statements.push_back("CREATE TABLE IF NOT EXISTS herbs (id INTEGER PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));");
-    statements.push_back("CREATE TABLE IF NOT EXISTS planets (id INTEGER PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));");
-    statements.push_back("CREATE TABLE IF NOT EXISTS trees (id INTEGER PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));");
+                            ", polarity INTEGER, description TEXT);");
+    statements.push_back("CREATE TABLE IF NOT EXISTS polarities (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning TEXT);");
+    statements.push_back("CREATE TABLE IF NOT EXISTS herbs (id INTEGER PRIMARY KEY, name VARCHAR(255), description TEXT);");
+    statements.push_back("CREATE TABLE IF NOT EXISTS planets (id INTEGER PRIMARY KEY, name VARCHAR(255), description TEXT);");
+    statements.push_back("CREATE TABLE IF NOT EXISTS trees (id INTEGER PRIMARY KEY, name VARCHAR(255), description TEXT);");
     statements.push_back(std::string("CREATE TABLE IF NOT EXISTS zodiac (id INTEGER PRIMARY KEY, name VARCHAR(255), start_day INTEGER") +
-                         ", start_month INTEGER, end_day INTEGER, end_month INTEGER, description VARCHAR(255));");
-    statements.push_back("CREATE TABLE IF NOT EXISTS runestones (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
+                         ", start_month INTEGER, end_day INTEGER, end_month INTEGER, description TEXT);");
+    statements.push_back("CREATE TABLE IF NOT EXISTS runestones (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning TEXT);");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_colour (runestone_id INTEGER, colour_id INTEGER, PRIMARY KEY(runestone_id, colour_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_god (runestone_id INTEGER, god_id INTEGER, PRIMARY KEY(runestone_id, god_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_herb (runestone_id INTEGER, herb_id INTEGER, PRIMARY KEY(runestone_id, herb_id));");
@@ -90,7 +90,7 @@ void create_tables()
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_polarity (runestone_id INTEGER, polarity_id INTEGER, PRIMARY KEY(runestone_id, polarity_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_tree (runestone_id INTEGER, tree_id INTEGER, PRIMARY KEY(runestone_id, tree_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS runestone_zodiac (runestone_id INTEGER, zodiac_id INTEGER, PRIMARY KEY(runestone_id, zodiac_id));");
-    statements.push_back("CREATE TABLE IF NOT EXISTS tarotcards (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning VARCHAR(255));");
+    statements.push_back("CREATE TABLE IF NOT EXISTS tarotcards (id INTEGER PRIMARY KEY, name VARCHAR(255), meaning TEXT);");
     statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_colour (tarot_card_id INTEGER, colour_id INTEGER, PRIMARY KEY(tarot_card_id, colour_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_god (tarot_card_id INTEGER, god_id INTEGER, PRIMARY KEY(tarot_card_id, god_id));");
     statements.push_back("CREATE TABLE IF NOT EXISTS tarot_card_herb (tarot_card_id INTEGER, herb_id INTEGER, PRIMARY KEY(tarot_card_id, herb_id));");
