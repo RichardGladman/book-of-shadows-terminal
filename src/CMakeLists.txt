@@ -13,9 +13,5 @@ add_executable(bookofshadows
     view/input.cpp view/view.cpp
 )
 
-target_include_directories(bookofshadows PUBLIC 
-          $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-          $<BUILD_INTERFACE:/usr/local/include/ansicodes>
-)
-
+target_include_directories(bookofshadows PUBLIC ${CMAKE_SOURCE_DIR}/include /usr/local/include/ansicodes)
 target_link_libraries(bookofshadows PRIVATE ansicodes::ansicodes_lib PRIVATE ${SQLite3_LIBRARIES})

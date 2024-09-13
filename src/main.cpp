@@ -1,6 +1,6 @@
 #include <filesystem>
 #include <memory>
-#include "../include/menu/menu.h"
+#include "menu/menu.h"
 #include "../include/menu/option.h"
 #include "../include/controllers/colourcontroller.h"
 #include "../include/controllers/godcontroller.h"
