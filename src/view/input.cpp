@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../../include/view/input.h"
+#include <view/input.h>
 #include <ansicodes/ansicodes.h>
 
 std::string Input::get_text(std::string prompt, int min_len, std::string default_value)

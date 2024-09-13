@@ -1,5 +1,5 @@
-#include "model/tarotcard.h"
-#include "model/runestone.h"
+#include <model/tarotcard.h>
+#include <model/runestone.h>
 
 #include <iomanip>
 #include <sstream>

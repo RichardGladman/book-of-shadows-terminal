@@ -1,17 +1,17 @@
-#include "../../include/controllers/godcontroller.h"
+#include <controllers/godcontroller.h>
 
 #include <iomanip>
 #include <memory>
 #include <sstream>
 
-#include "../../include/menu/menu.h"
-#include "../../include/menu/option.h"
-#include "../../include/view/input.h"
-#include "../../include/model/god.h"
-#include "../../include/model/polarity.h"
-#include "../../include/database/database.h"
-#include "../../include/database/sqldata.h"
-#include "../../include/view/view.h"
+#include <menu/menu.h>
+#include <menu/option.h>
+#include <view/input.h>
+#include <model/god.h>
+#include <model/polarity.h>
+#include <database/database.h>
+#include <database/sqldata.h>
+#include <view/view.h>
 
 extern std::unique_ptr<Database> p_database;
 std::unique_ptr<std::vector<Model::God>> god_results = std::make_unique<std::vector<Model::God>>();

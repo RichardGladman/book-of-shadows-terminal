@@ -1,4 +1,4 @@
-#include "model/baseentity.h"
+#include <model/baseentity.h>
 
 namespace Model
 {

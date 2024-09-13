@@ -8,8 +8,8 @@
 #include <vector>
 #include <sqlite3.h>
 
-#include "../../include/database/sqldata.h"
-#include "../../include/model/colour.h"
+#include <database/sqldata.h>
+#include <model/colour.h>
 
 class Database
 {

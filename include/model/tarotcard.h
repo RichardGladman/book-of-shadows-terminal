@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "baseentity.h"
 #include "colour.h"
 #include "god.h"
 #include "herb.h"

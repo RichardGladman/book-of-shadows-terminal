@@ -1,4 +1,4 @@
-#include "../../include/model/colour.h"
+#include <model/colour.h>
 #include <iomanip>
 #include <sstream>
 

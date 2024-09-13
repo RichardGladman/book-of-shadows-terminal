@@ -1,4 +1,4 @@
-#include "../../include/database/sqldata.h"
+#include <database/sqldata.h>
 
 SqlData::SqlData(const std::string &type, const std::string &data) : m_type {type}, m_data {data} {}
 

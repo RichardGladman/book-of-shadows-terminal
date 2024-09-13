@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "menu/option.h"
+#include <menu/option.h>
 
 class Menu
 {

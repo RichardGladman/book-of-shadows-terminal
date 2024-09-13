@@ -1,6 +1,6 @@
 #include <cstring>
-#include "../../include/database/database.h"
-#include "../../include/view/view.h"
+#include <database/database.h>
+#include <view/view.h>
 
 Database::Database(const std::string db_name)
 {

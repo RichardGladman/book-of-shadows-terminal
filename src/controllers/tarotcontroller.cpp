@@ -2,13 +2,13 @@
 #include <memory>
 #include <sstream>
 
-#include "../../include/menu/menu.h"
-#include "../../include/menu/option.h"
-#include "../../include/database/database.h"
-#include "../../include/database/sqldata.h"
-#include "../../include/model/tarotcard.h"
-#include "../../include/view/input.h"
-#include "../../include/view/view.h"
+#include <menu/menu.h>
+#include <menu/option.h>
+#include <database/database.h>
+#include <database/sqldata.h>
+#include <model/tarotcard.h>
+#include <view/input.h>
+#include <view/view.h>
 
 extern std::unique_ptr<Database> p_database;
 std::unique_ptr<std::vector<Model::TarotCard>> tarot_card_results = std::make_unique<std::vector<Model::TarotCard>>();

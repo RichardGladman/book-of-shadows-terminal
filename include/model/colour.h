@@ -2,7 +2,7 @@
 #define COLOUR_H
 
 #include <string>
-#include "../../include/model/baseentity.h"
+#include "baseentity.h"
 
 namespace Model 
 {

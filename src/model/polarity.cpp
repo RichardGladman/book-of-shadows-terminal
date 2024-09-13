@@ -1,4 +1,4 @@
-#include "model/polarity.h"
+#include <model/polarity.h>
 
 #include <iomanip>
 #include <sstream>

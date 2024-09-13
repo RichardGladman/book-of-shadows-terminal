@@ -1,14 +1,14 @@
-#include "../include/controllers/colourcontroller.h"
+#include <controllers/colourcontroller.h>
 
 #include <iomanip>
 #include <memory>
 #include <sstream>
-#include "../../include/menu/menu.h"
-#include "../../include/view/input.h"
-#include "../../include/model/colour.h"
-#include "../../include/database/database.h"
-#include "../../include/database/sqldata.h"
-#include "../../include/view/view.h"
+#include <menu/menu.h>
+#include <view/input.h>
+#include <model/colour.h>
+#include <database/database.h>
+#include <database/sqldata.h>
+#include <view/view.h>
 
 extern std::unique_ptr<Database> p_database;
 std::unique_ptr<std::vector<Model::Colour>> query_results = std::make_unique<std::vector<Model::Colour>>();

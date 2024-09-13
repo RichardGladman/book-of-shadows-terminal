@@ -1,4 +1,4 @@
-#include "../../include/view/view.h"
+#include <view/view.h>
 
 #include <iostream>
 #include <ansicodes/ansicodes.h>
