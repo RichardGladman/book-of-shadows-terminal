@@ -50,6 +50,40 @@ void add_relation(const std::string &relation, const std::string &relation_title
     }
 }
 
+void remove_relation(const std::string &relation, const std::string &title, const std::string &name_of_parent,
+                    const std::string &parent_table, const std::string &parent_title)
+{
+    std::string name = Input::get_text("Enter the " + relation);
+    if (name.size() == 0) {
+        return;
+    }
+
+    long parent_id = get_parent_id(name_of_parent, parent_table, parent_title);
+
+    if (parent_id != 0) {
+        std::string table = get_table_name(relation);
+        std::string sql = "SELECT id FROM " + table + " WHERE name LIKE '" + name + "'";
+
+        id_of_relation = 0;
+
+        p_database->read(sql, populate_relations);
+        if (id_of_relation == 0) {
+            View::error_message(title + " '" + name + "' not found");
+            return;
+        }
+
+        sql = "DELETE FROM " + parent_table + "_" + relation + " WHERE " + parent_table + "_id = ? AND " + relation + "_id = ?";
+
+        std::vector<SqlData> data {};
+        data.push_back(SqlData {"number", std::to_string(parent_id)});
+        data.push_back(SqlData {"number", std::to_string(id_of_relation)});
+
+        if (p_database->save(sql, data)) {
+            View::success_message(parent_title + " / " + title + " removed successfully");
+        }
+    }
+}
+
 int get_parent_id(const std::string &name, std::string table, const std::string &title)
 {
     size_t pos = table.find('_');

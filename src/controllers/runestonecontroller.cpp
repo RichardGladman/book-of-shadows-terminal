@@ -43,13 +43,7 @@ namespace
     void remove_tree();
     void remove_zodiac();
 
-    void remove_relation(const std::string &relation, const std::string &title);
-
-    std::string get_table_name(const std::string &relation);
-    int get_runestone_id(const std::string name);
-
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names);
-    int populate_relations(void *data, int column_count, char **column_data, char **col_names);
 }
 
 
@@ -178,7 +172,7 @@ namespace
             View::success_message("Runestone saved successfully");
    
             name_of_runestone = runestone.name();
-            
+
             std::unique_ptr<Menu> menu = make_edit_menu();
             char selection {};
 
@@ -282,110 +276,43 @@ namespace
 
     void remove_colour()
     {
-        remove_relation("colour", "Colour");
+        remove_relation("colour", "Colour", name_of_runestone, "runestone", "Runestone");
     }
 
     void remove_god()
     {
-        remove_relation("god", "God");
+        remove_relation("god", "God", name_of_runestone, "runestone", "Runestone");
     }
 
     void remove_herb()
     {
-        remove_relation("herb", "Herb");
+        remove_relation("herb", "Herb", name_of_runestone, "runestone", "Runestone");
     }
 
     void remove_planet()
     {
-        remove_relation("planet", "Planet");
+        remove_relation("planet", "Planet", name_of_runestone, "runestone", "Runestone");
     }
 
     void remove_polarity()
     {
-        remove_relation("polarity", "Polarity");
+        remove_relation("polarity", "Polarity", name_of_runestone, "runestone", "Runestone");
     }
 
     void remove_tree()
     {
-        remove_relation("tree", "Tree");
+        remove_relation("tree", "Tree", name_of_runestone, "runestone", "Runestone");
     }
 
     void remove_zodiac()
     {
-        remove_relation("zodiac", "Zodiac");
-    }
-
-    void remove_relation(const std::string &relation, const std::string &title)
-    {
-        std::string name = Input::get_text("Enter the " + relation);
-        if (name.size() == 0) {
-            return;
-        }
-
-        long runestone_id = get_runestone_id(name_of_runestone);
-
-        if (runestone_id != 0) {
-            std::string table = get_table_name(relation);
-            std::string sql = "SELECT id FROM " + table + " WHERE name LIKE '" + name + "'";
-
-            id_of_relation = 0;
-
-            p_database->read(sql, populate_relations);
-            if (id_of_relation == 0) {
-                View::error_message(title + " '" + name + "' not found");
-                return;
-            }
-
-            sql = "DELETE FROM runestone_" + relation + " WHERE runestone_id = ? AND " + relation + "_id = ?";
-
-            std::vector<SqlData> data {};
-            data.push_back(SqlData {"number", std::to_string(runestone_id)});
-            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-            if (p_database->save(sql, data)) {
-                View::success_message("Runestone / " + title + " removed successfully");
-            }
-        }
-    }
-
-    std::string get_table_name(const std::string &relation)
-    {
-        std::string table {};
-
-        if (relation == "polarity") {
-            table = "polarities";
-        } else if (relation == "zodiac") {
-            table = "zodiac";
-        } else {
-            table = relation + "s";
-        }
-
-        return table;
-    }
-
-    int get_runestone_id(const std::string name)
-    {
-        std::string sql = "SELECT * FROM runestones WHERE name LIKE '" + name + "'";
-
-        p_database->read(sql, populate_runestones);
-        if (runestone_results->size() == 0) {
-            View::error_message("Runestone '" + name + "' not found");
-            return 0;
-        }
-
-        return runestone_results->at(0).get_id();
+        remove_relation("zodiac", "Zodiac", name_of_runestone, "runestone", "Runestone");
     }
 
     int populate_runestones(void *data, int column_count, char **column_data, char **col_names)
     {
         runestone_results->push_back(Model::Runestone {std::atoi(column_data[0]), column_data[1], column_data[2]});
 
-        return 0;
-    }
-
-    int populate_relations(void *data, int column_count, char **column_data, char **col_names)
-    {
-        id_of_relation = std::atoi(column_data[0]);
         return 0;
     }
 }
