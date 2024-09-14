@@ -9,6 +9,7 @@ add_executable(bookofshadows
     controllers/colourcontroller.cpp controllers/godcontroller.cpp controllers/herbcontroller.cpp
     controllers/polaritycontroller.cpp controllers/planetcontroller.cpp controllers/treecontroller.cpp
     controllers/zodiaccontroller.cpp controllers/runestonecontroller.cpp controllers/tarotcontroller.cpp
+    controllers/correspondancecontroller.cpp
     database/database.cpp database/sqldata.cpp
     view/input.cpp view/view.cpp
 )

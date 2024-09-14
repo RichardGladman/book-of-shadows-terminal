@@ -2,6 +2,7 @@
 #include <memory>
 #include <sstream>
 
+#include <controllers/correspondancecontroller.h>
 #include <menu/menu.h>
 #include <menu/option.h>
 #include <database/database.h>
@@ -42,7 +43,6 @@ namespace
     void remove_tree();
     void remove_zodiac();
 
-    void add_relation(const std::string &relation, const std::string &title);
     void remove_relation(const std::string &relation, const std::string &title);
 
     std::string get_table_name(const std::string &relation);
@@ -177,6 +177,8 @@ namespace
         if (p_database->save(sql, data)) {
             View::success_message("Runestone saved successfully");
    
+            name_of_runestone = runestone.name();
+            
             std::unique_ptr<Menu> menu = make_edit_menu();
             char selection {};
 
@@ -244,37 +246,38 @@ namespace
 
     void add_colour()
     {
-        add_relation("colour", "Colour");
+        View::success_message(name_of_runestone);
+        add_relation("colour", "Colour", name_of_runestone, "runestone", "Runestone");
     }
 
     void add_god()
     {
-        add_relation("god", "God");
+        add_relation("god", "God", name_of_runestone, "runestone", "Runestone");
     }
 
     void add_herb()
     {
-        add_relation("herb", "Herb");
+        add_relation("herb", "Herb", name_of_runestone, "runestone", "Runestone");
     }
 
     void add_planet()
     {
-        add_relation("planet", "Planet");
+        add_relation("planet", "Planet", name_of_runestone, "runestone", "Runestone");
     }
 
     void add_polarity()
     {
-        add_relation("polarity", "Polarity");
+        add_relation("polarity", "Polarity", name_of_runestone, "runestone", "Runestone");
     }
 
     void add_tree()
     {
-        add_relation("tree", "Tree");
+        add_relation("tree", "Tree", name_of_runestone, "runestone", "Runestone");
     }
 
     void add_zodiac()
     {
-        add_relation("zodiac", "Zodiac");
+        add_relation("zodiac", "Zodiac", name_of_runestone, "runestone", "Runestone");
     }
 
     void remove_colour()
@@ -310,39 +313,6 @@ namespace
     void remove_zodiac()
     {
         remove_relation("zodiac", "Zodiac");
-    }
-
-    void add_relation(const std::string &relation, const std::string &title)
-    {
-        std::string name = Input::get_text("Enter the " + relation);
-        if (name.size() == 0) {
-            return;
-        }
-
-        long runestone_id = get_runestone_id(name_of_runestone);
-
-        if (runestone_id != 0) {
-            std::string table = get_table_name(relation);
-            std::string sql = "SELECT id FROM " + table + " WHERE name LIKE '" + name + "'";
-
-            id_of_relation = 0;
-
-            p_database->read(sql, populate_relations);
-            if (id_of_relation == 0) {
-                View::error_message(title + " '" + name + "' not found");
-                return;
-            }
-
-            sql = "INSERT INTO runestone_" + relation + " (runestone_id, " + relation + "_id) VALUES(?, ?)";
-
-            std::vector<SqlData> data {};
-            data.push_back(SqlData {"number", std::to_string(runestone_id)});
-            data.push_back(SqlData {"number", std::to_string(id_of_relation)});
-
-            if (p_database->save(sql, data)) {
-                View::success_message("Runestone / " + title + " saved successfully");
-            }
-        }
     }
 
     void remove_relation(const std::string &relation, const std::string &title)
