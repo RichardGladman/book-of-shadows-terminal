@@ -4,7 +4,7 @@ This isn't intended to be a feature complete program it was intended to practice
 
 It's a basic attempt at a book of shadows, logging runes, tarot cards and their correspondences.
 
-If you are interested, you build it by cloning it then changing into the project directory and running the following commands:
+If you are interested, you build it by building and installing [ansicodes](https://github.com/RichardGladman/ansicodes) and then cloning it then changing into the project directory and running the following commands:
 
 ```
 mkdir build
