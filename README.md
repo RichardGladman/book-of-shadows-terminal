@@ -6,12 +6,13 @@ It's a basic attempt at a book of shadows, logging runes, tarot cards and their 
 
 If you are interested, you build it by cloning it then changing into the project directory and running the following commands:
 
-`````mkdir build
+```
+mkdir build
 cd build
 cmake ..
-make````
+make
+```
 
 And then you run it by running ./bookofshadows
 
 It was written and tested on Linux and uses terminal ansi codes, so it may give funky output in Windows.
-`````
